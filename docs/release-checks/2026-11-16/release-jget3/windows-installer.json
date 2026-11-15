@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "version": "1.3.2-jget.3",
+  "product": "ScratchJGET",
+  "windows_file_version": "1.3.2.7",
+  "installer_bytes": 67702376,
+  "installer_sha256": "9363986846eb2e2ab13985d5165885715929f9a298cae5d59d1e591707cb5020",
+  "portable_bytes": 101397213,
+  "portable_sha256": "37536ea84027464c2e5e6005c9c6b95f995cf3b4b1004440c6641d57534e6a87",
+  "payload_files_compared": 8969,
+  "application_architecture": "AMD64",
+  "application_icon_sizes": 6,
+  "installer_and_uninstaller": "asInvoker",
+  "old_executables_removed": true,
+  "non_resource_code_sections_unchanged": true,
+  "production_bootstrap_uninstrumented": true,
+  "windows_runtime_test": "not_run_locally"
+}
