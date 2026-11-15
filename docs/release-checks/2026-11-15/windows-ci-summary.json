@@ -1,0 +1,19 @@
+{
+  "version": "1.3.2-jget.1",
+  "installerSha256": "09f2f9e0125ae7b5582b67ace7ccbb8b69db7844a510fcfe241cb4d2e90fb4b8",
+  "os": "Microsoft Windows NT 10.0.20348.0",
+  "passed": true,
+  "regressionPrograms": 12,
+  "product": "J-GET Junior",
+  "uninstallPreservedLibrary": true,
+  "nativePhases": [
+    "create",
+    "reopen"
+  ],
+  "repeatInstallPreservedLibrary": true,
+  "architecture": "AMD64",
+  "workflowRun": "https://github.com/user116RUS/J-GET-Junior/actions/runs/43754172618",
+  "sourceCommit": "25658b70d77fd2d7e5accba37d20af50dfa0c72c",
+  "runner": "windows-2022",
+  "audioVerification": "43 audio assets decoded; playback playing/ended events completed with --mute-audio. Physical audible output was not tested."
+}
