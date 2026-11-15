@@ -16,15 +16,16 @@
  }
  if(location.href.indexOf('editor.html')<0)return {unexpected:location.href};
  var sprite,target,paintMD5;
- return until(function(){return SJ.stage&&SJ.stage.currentPage&&SJ.getSprite()&&!SJ.onHold&&!Project.error;},20000).then(function(){
+ return until(function(){return SJ.stage&&SJ.stage.currentPage&&SJ.getSprite()&&!SJ.onHold&&Project.mediaCount===0&&!Project.error&&document.getElementById('backdrop').style.display==='none';},20000).then(function(){
   sprite=SJ.getSprite();assert(!!sprite,'editor opened with sprite');
   if(report.phase==='reopen'){
    var expected=JSON.parse(fs.readFileSync(root+'/expected.json','utf8'));
    sprite=document.getElementById(expected.id).owner;
-   var actual=sprite.getData();
+   var actual=sprite.getData();var saved=Project.metadata.json;if(typeof saved==='string')saved=JSON.parse(saved);var stored=saved[saved.currentPage][expected.id];report.reopenedPosition={x:actual.xcoor,y:actual.ycoor,homeX:expected.homex,homeY:expected.homey,storedX:stored.xcoor,storedY:stored.ycoor};
    assert(actual.md5===expected.md5,'painted costume restored');
    assert(JSON.stringify(actual.scripts)===JSON.stringify(expected.scripts),'keyboard collision and sound scripts restored exactly');
-   assert(actual.xcoor===expected.xcoor&&actual.ycoor===expected.ycoor,'position restored');
+   assert(stored.xcoor===expected.xcoor&&stored.ycoor===expected.ycoor,'runtime position persisted in saved project');
+   assert(actual.xcoor===expected.homex&&actual.ycoor===expected.homey,'reopened stage returns to saved home position');
    return;
   }
   target=SJ.stage.currentPage.addSprite(sprite.scale,sprite.md5,'QA Target');

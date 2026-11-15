@@ -1,0 +1,9 @@
+{
+  "archive": "J-GET-Junior-1.3.2-jget.1-mac-Intel.zip",
+  "size": 98853709,
+  "sha256": "6720cb7060757df0c7a7a75caa5bde38d246ee346f6c409e4f613a7f4c419bf3",
+  "regularFiles": 9016,
+  "symlinks": 19,
+  "allMatch": true,
+  "extractedWith": "macOS ditto; permissions and symlinks checked"
+}

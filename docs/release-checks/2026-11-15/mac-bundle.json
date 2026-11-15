@@ -1,0 +1,99 @@
+{
+  "identity": {
+    "CFBundleName": "J-GET Junior",
+    "CFBundleDisplayName": "J-GET Junior",
+    "CFBundleExecutable": "J-GET Junior",
+    "CFBundleIdentifier": "it.jget.junior",
+    "CFBundleVersion": "1.3.2.5",
+    "CFBundleShortVersionString": "1.3.2"
+  },
+  "machO": [
+    {
+      "path": "Contents/MacOS/J-GET Junior",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/J-GET Junior Helper NP.app/Contents/MacOS/J-GET Junior Helper NP",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/J-GET Junior Helper EH.app/Contents/MacOS/J-GET Junior Helper EH",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Mantle.framework/Versions/A/Mantle",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/J-GET Junior Helper.app/Contents/MacOS/J-GET Junior Helper",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/ReactiveCocoa.framework/Versions/A/ReactiveCocoa",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Squirrel.framework/Versions/A/Squirrel",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Squirrel.framework/Versions/A/Resources/ShipIt",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/crashpad_handler",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libnode.dylib",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    },
+    {
+      "path": "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib",
+      "architecture": "x86_64",
+      "matchesPreservedRuntime": true
+    }
+  ],
+  "iconMatchesSource": true,
+  "runtimeMatchesBase": true,
+  "helpers": [
+    {
+      "CFBundleDisplayName": "J-GET Junior Helper",
+      "CFBundleName": "J-GET Junior Helper",
+      "CFBundleIdentifier": "it.jget.junior.helper",
+      "CFBundleExecutable": "J-GET Junior Helper",
+      "executableExists": true
+    },
+    {
+      "CFBundleDisplayName": "J-GET Junior Helper EH",
+      "CFBundleName": "J-GET Junior Helper EH",
+      "CFBundleIdentifier": "it.jget.junior.helper.EH",
+      "CFBundleExecutable": "J-GET Junior Helper EH",
+      "executableExists": true
+    },
+    {
+      "CFBundleDisplayName": "J-GET Junior Helper NP",
+      "CFBundleName": "J-GET Junior Helper NP",
+      "CFBundleIdentifier": "it.jget.junior.helper.NP",
+      "CFBundleExecutable": "J-GET Junior Helper NP",
+      "executableExists": true
+    }
+  ],
+  "oldNamedBundlePaths": [],
+  "passed": true
+}

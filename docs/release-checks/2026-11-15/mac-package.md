@@ -2,7 +2,7 @@
 
 Date: 15 November 2026.
 
-**Status: awaiting the final frozen package.** The checks below describe the staged package reviewed during release preparation. They are not a final release approval. The package is being refreshed to include final artwork and removal of unused production-cache payloads. Native execution is checked separately.
+**Status: PASS for the final staged application.** The frozen J-GET Junior 1.3.2-jget.1 application passed all packaging checks below. Native execution and the final download archive are checked separately.
 
 ## Method
 
@@ -12,7 +12,7 @@ The verifier compares every source resource under `src/` with the staged applica
 
 It also checks current installation guides and notices, absence of explicitly removed assets and obsolete documents, absence of orphaned cache payloads, and a bounded scan for the invoking user's home path and project/private-data filenames. These checks do not modify the staged application.
 
-## Preliminary source and compiler results
+## Final source and compiler results
 
 - All 859 source resources matched: 473 normalized text files and 386 exact byte comparisons, including HTML, JavaScript, SVG, CSS, JSON, PNG, platform icons, fonts and audio.
 - All 66 changed text resources matched their production-cache payloads; 24 JavaScript modules matched independent Babel compilation.
@@ -25,12 +25,17 @@ It also checks current installation guides and notices, absence of explicitly re
 - Main application name, display name and executable: `J-GET Junior`.
 - Bundle identifier: `it.jget.junior`; bundle version: `1.3.2.5`; short version: `1.3.2`.
 - All 12 Mach-O executables/libraries are x86_64 and byte-identical to the preserved Intel runtime; only the main executable's filename changes.
-- The three helper applications have J-GET Junior display names and `it.jget.junior` identifiers. Internal helper filenames remain unchanged because Chromium 59 resolves those names.
-- Final icon equality will be rechecked after the artwork refresh.
+- All three helper application bundles, executables and display names use J-GET Junior, with `it.jget.junior` identifiers. Each executable exists at its declared path. No previous-brand bundle/executable names remain in the framework helpers.
+- The final application ICNS icon is byte-identical to `src/icons/mac/icon.icns`. All other packaged icon resources also passed source comparison.
 
 ## Packaging issues found during preparation
 
-The review identified six inherited documentation files and screenshots that were still present from the base application, plus unreferenced cache payloads holding previous artwork. Cleanup was requested in the packaging scripts. These findings must be checked again on the final frozen package before this report is marked PASS.
+The review identified six inherited documentation files and screenshots from the base application, plus unreferenced cache payloads holding previous artwork. The packaging scripts were corrected and the final app was rebuilt. All 24 explicitly removed source/document assets are now absent from both files and cache index. There are no unreferenced hash payloads left in the production cache. Only the current installation and audio documentation allowlist is packaged.
+
+## Evidence
+
+- [Resource and production-cache verification](mac-package.json): 8855 packaged resource files scanned; no failures.
+- [Bundle, icon and runtime architecture verification](mac-bundle.json).
 
 ## Limits
 

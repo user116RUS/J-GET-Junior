@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "version": "1.3.2-jget.1",
+  "windows_file_version": "1.3.2.5",
+  "installer_bytes": 67591587,
+  "installer_sha256": "09f2f9e0125ae7b5582b67ace7ccbb8b69db7844a510fcfe241cb4d2e90fb4b8",
+  "portable_sha256": "03f09c56c1fefcb5eeae9096b43f9b86794233ac7b272d2e2a63c1e3eb158c11",
+  "payload_files_compared": 8965,
+  "application_architecture": "AMD64",
+  "application_icon_sizes": 6,
+  "application_name": "J-GET Junior",
+  "installer_and_uninstaller": "asInvoker",
+  "old_executable_removed": true,
+  "removed_assets": 24,
+  "production_bootstrap_uninstrumented": true
+}
