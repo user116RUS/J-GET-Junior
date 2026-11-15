@@ -96,24 +96,8 @@ export default class Path {
     }
 
     static addPoints (points) {
-        var it = 0;
-        var b = true;
-        var result;
-        while (b) {
-            result = Path.fillWithPoints(points);
-            b = result[0];
-            it++;
-            if (it > 10) {
-                return result[1];
-            }
-        }
-        return result[1];
-    }
-
-    static fillWithPoints (points) {
         var n = points.length;
         var i = 1;
-        var res = false;
         var plist = [points[0]];
         while (i < n - 1) {
             var here = points[i];
@@ -126,12 +110,11 @@ export default class Path {
                     x: mp.x,
                     y: mp.y
                 });
-                res = true;
             }
             i++;
         }
         plist.push(points[n - 1]);
-        return [res, plist];
+        return plist;
     }
 
     static deletePoints (points) {
@@ -1973,57 +1956,27 @@ export default class Path {
         if (points.length < 8) {
             return [];
         }
-        var p1x, p2x, p3x, p4x, p1y, p2y, p3y, p4y;
-        p1x = points[0];
-        p1y = points[1];
-        p2x = points[2];
-        p2y = points[3];
-        p3x = points[4];
-        p3y = points[5];
-        p4x = points[6];
-        p4y = points[7];
-
-        var x, y, t;
-
-        var xl = p1x - 1;
-        var yl = p1y - 1;
-        t = 0;
-        var f = 1;
-
-        var k = 1.1;
-        //Array to hold all points on the bezier curve
-        var curvePoints = [];
-
-        while ((t <= 1) && (t >= 0)) { // t goes from 0 to 1
-            x = 0;
-            y = 0;
-            x = (1 - t) * (1 - t) * (1 - t) * p1x + 3 * (1 - t) * (1 - t) *
-                t * p2x + 3 * (1 - t) * t * t * p3x + t * t * t * p4x;
-            y = (1 - t) * (1 - t) * (1 - t) * p1y + 3 * (1 - t) * (1 - t) *
-                t * p2y + 3 * (1 - t) * t * t * p3y + t * t * t * p4y;
-            x = Math.round(x);
-            y = Math.round(y);
-            if (x != xl || y != yl) {
-                if (t == 0) {
-                    xl = x;
-                    yl = y;
-                }
-                if (x - xl > 1 || y - yl > 1 || xl - x > 1 || yl - y > 1) {
-                    t -= f;
-                    f = f / k;
-                } else {
-                    curvePoints[curvePoints.length] = {
-                        x: x,
-                        y: y
-                    };
-                    xl = x;
-                    yl = y;
-                }
-            } else {
-                t -= f;
-                f = f * k;
+        const [x0, y0, x1, y1, x2, y2, x3, y3] = points;
+        // The derivative in either axis is bounded by three times the largest
+        // control-point step. This spaces samples at most one pixel apart on
+        // the paint canvas and bounds work for oversized imported artwork.
+        const maxStep = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0),
+            Math.abs(x2 - x1), Math.abs(y2 - y1), Math.abs(x3 - x2), Math.abs(y3 - y2));
+        const steps = Math.min(4096, Math.max(1, Math.ceil(3 * maxStep)));
+        const curvePoints = [];
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const u = 1 - t;
+            const a = u * u * u;
+            const b = 3 * u * u * t;
+            const c = 3 * u * t * t;
+            const d = t * t * t;
+            const x = Math.round(a * x0 + b * x1 + c * x2 + d * x3);
+            const y = Math.round(a * y0 + b * y1 + c * y2 + d * y3);
+            const previous = curvePoints[curvePoints.length - 1];
+            if (!previous || x != previous.x || y != previous.y) {
+                curvePoints.push({x, y});
             }
-            t += f;
         }
         return curvePoints;
     }

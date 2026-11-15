@@ -9,21 +9,21 @@ import ScratchAudio from '../utils/ScratchAudio';
 // Undo / Redo Functions
 //////////////////////////////////
 
+const maxSnapshots = 32;
+const maxCharacters = 8 * 1024 * 1024; // Up to 16 MiB of UTF-16 SVG text.
 let buffer = [];
-let index = 0;
+let index = -1;
+let initialStateDiscarded = false;
 
 export default class PaintUndo {
-    // Getters/setters for globally used properties
-    static set buffer (newBuffer) {
-        buffer = newBuffer;
+    static reset () {
+        buffer = [];
+        index = -1;
+        initialStateDiscarded = false;
     }
 
-    static get index () {
-        return index;
-    }
-
-    static set index (newIndex) {
-        index = newIndex;
+    static get hasChanges () {
+        return initialStateDiscarded || index > 0;
     }
 
     ////////////////////////////////////////
@@ -70,13 +70,19 @@ export default class PaintUndo {
         Paint.setZoomTo(Paint.currentZoom);
     }
 
-    // you record before introducing a change
     static record (dontStartStories) {
-        if ((index + 1) <= buffer.length) {
-            buffer.splice(index + 1, buffer.length);
+        const snapshot = PaintUndo.getCanvas();
+        if (snapshot === buffer[index]) {
+            return;
         }
-        buffer.push(PaintUndo.getCanvas());
-        index++;
+        buffer.splice(index + 1);
+        buffer.push(snapshot);
+        let characters = buffer.reduce((total, svg) => total + svg.length, 0);
+        while (buffer.length > 1 && (buffer.length > maxSnapshots || characters > maxCharacters)) {
+            characters -= buffer.shift().length;
+            initialStateDiscarded = true;
+        }
+        index = buffer.length - 1;
         if (gn('id_pundo')) {
             PaintUndo.updateActiveUndo();
         }
@@ -102,15 +108,9 @@ export default class PaintUndo {
         if (Camera.active) {
             Camera.doAction('undo');
         }
-        while (index >= buffer.length) {
+        ScratchAudio.sndFX(index > 0 ? 'tap.wav' : 'boing.wav');
+        if (index > 0) {
             index--;
-        }
-        index--;
-        var snd = (index < 0) ? 'boing.wav' : 'tap.wav';
-        ScratchAudio.sndFX(snd);
-        if (index < 0) {
-            index = 0;
-        } else {
             PaintUndo.runUndo();
         }
         PaintUndo.updateActiveUndo();
@@ -125,12 +125,10 @@ export default class PaintUndo {
         if (Camera.active) {
             Camera.doAction('undo');
         }
-        index++;
-        var snd = (index > buffer.length - 1) ? 'boing.wav' : 'tap.wav';
-        ScratchAudio.sndFX(snd);
-        if (index > buffer.length - 1) {
-            index = buffer.length - 1;
-        } else {
+        const canRedo = index < buffer.length - 1;
+        ScratchAudio.sndFX(canRedo ? 'tap.wav' : 'boing.wav');
+        if (canRedo) {
+            index++;
             PaintUndo.runUndo();
         }
         PaintUndo.updateActiveUndo();

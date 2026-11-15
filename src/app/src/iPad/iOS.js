@@ -195,6 +195,12 @@ export default class iOS {
 
     // Sound functions
 
+    static getSoundSource (name) {
+        // Electron 1.8's file protocol cannot stream these WAV files directly.
+        // Reuse the registered data URI, but give previews their own Audio.
+        return tabletInterface.io_getsoundsource(name);
+    }
+
     static registerSound (dir, name, fcn) {
         var result = tabletInterface.io_registersound(dir, name);
         if (fcn) {

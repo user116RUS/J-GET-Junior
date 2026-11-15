@@ -13,6 +13,7 @@ import {frame, gn, newHTML, scaleMultiplier, getIdFor,
     isAndroid, setProps, setCanvasSize} from '../../utils/lib';
 
 let metadata = undefined;
+let lastCommittedProject;
 let mediaCount = -1;
 let saving = false;
 let interval = undefined;
@@ -22,7 +23,17 @@ let error = false;
 let projectbarsize = 66;
 let mediaCountBase = 1;
 
+window.addEventListener('scratchjr-storage-error', function () {
+    saving = false;
+    ScratchJr.onHold = false;
+    Alert.close();
+});
+
 export default class Project {
+    static get saving () {
+        return saving;
+    }
+
     static get metadata () {
         return metadata;
     }
@@ -120,6 +131,9 @@ export default class Project {
             ScratchJr.stage.currentPage.update();
             ScratchJr.changed = false;
             ScratchJr.storyStarted = false;
+            if (window.tablet && window.tablet.onEditorClose) {
+                window.tablet.onEditorClose(ScratchJr.saveBeforeClose);
+            }
             UI.needsScroll();
             ScratchJr.log('all thumbnails updated', ScratchJr.getTime(), 'sec');
             if (isAndroid) {
@@ -438,19 +452,17 @@ export default class Project {
 
     static save (id, whenDone) {
         saving = true;
-        var th = metadata.thumbnail;
-        if (th && ScratchJr.editmode != 'storyStarter') { // Don't try to delete the thumbnail in a sample project
-            var thumb = (typeof th === 'string') ? JSON.parse(th) : th;
-            if (thumb && thumb.md5.indexOf('samples/') < 0) { // In case we've exited story-starter mode
-                Project.thumbnailUnique(thumb.md5, id, function (isUnique) {
-                    if (isUnique) {
-                        iOS.remove(thumb.md5, iOS.trace); // remove thumb;
-                    }
-                });
-            }
-        }
+        var previous = metadata.thumbnail;
+        var previousThumb = typeof previous === 'string' ? JSON.parse(previous) : previous;
         metadata.id = id;
         metadata.json = Project.getProject(ScratchJr.stage.pages[0].id);
+        // Original autosave also observes edits made through undo and redo.
+        // Compare the actual state so an idle editor does not rewrite the library.
+        const state = JSON.stringify([id, metadata.version, metadata.deleted, metadata.name, metadata.json]);
+        if (lastCommittedProject === state) {
+            saveDone();
+            return;
+        }
         Project.getThumbnailPNG(ScratchJr.stage.pages[0], 192, 144, getMD5);
         function getMD5 (dataurl) {
             var pngBase64 = dataurl.split(',')[1];
@@ -465,12 +477,23 @@ export default class Project {
         }
 
         function doNext (md5) {
-            metadata.thumbnail = {
-                'pagecount': ScratchJr.stage.pages.length,
-                'md5': md5
-            };
-            metadata.mtime = (new Date()).getTime().toString();
-            IO.saveProject(metadata, saveDone);
+            var nextThumb = {pagecount: ScratchJr.stage.pages.length, md5: md5};
+            var updated = Object.assign({}, metadata, {thumbnail: nextThumb, mtime: Date.now().toString()});
+            IO.saveProject(updated, function () {
+                lastCommittedProject = state;
+                metadata.thumbnail = nextThumb;
+                metadata.mtime = updated.mtime;
+                // Keep the previous preview reachable until the project row is durable.
+                if (previousThumb && previousThumb.md5 && previousThumb.md5 !== md5 &&
+                    ScratchJr.editmode !== 'storyStarter' && previousThumb.md5.indexOf('samples/') < 0) {
+                    Project.thumbnailUnique(previousThumb.md5, id, function (isUnique) {
+                        if (isUnique) iOS.remove(previousThumb.md5, iOS.trace);
+                        saveDone();
+                    });
+                } else {
+                    saveDone();
+                }
+            });
         }
 
         function saveDone () {
@@ -501,7 +524,7 @@ export default class Project {
 
     static encodeStrip (b) {
         var res = [];
-        var hasargs = ['playsnd', 'gotopage', 'playusersnd', 'setcolor', 'onmessage', 'message', 'setspeed'];
+        var hasargs = ['playsnd', 'gotopage', 'playusersnd', 'setcolor', 'onmessage', 'message', 'setspeed', 'onkey'];
         var loops = ['repeat'];
         var carets = ['caretcmd', 'caretend', 'caretstart'];
         while (b != null) {

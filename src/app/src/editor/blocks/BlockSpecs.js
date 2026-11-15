@@ -1,5 +1,6 @@
 import Localization from '../../utils/Localization';
 import IO from '../../iPad/IO';
+import KeyboardKeys from '../../utils/KeyboardKeys';
 
 let loadCount = 0;
 
@@ -175,7 +176,7 @@ export default class BlockSpecs {
 
 
     static setupPalettesDef () {
-        return [['onflag', 'onclick', 'ontouch', 'onmessage', 'message'],
+        return [['onflag', 'onclick', 'onkey', 'ontouch', 'ontouchsprite', 'onmessage', 'message'],
             ['forward', 'back', 'up', 'down', 'right', 'left', 'hop', 'home'],
             ['say', 'space', 'grow', 'shrink', 'same', 'space', 'hide', 'show'],
             [],
@@ -197,6 +198,7 @@ export default class BlockSpecs {
     // c -- > color drop down
     // s --> sound name
     // p --> page icon
+    // k --> keyboard key
     //
     ////////////////////////////////
 
@@ -208,8 +210,12 @@ export default class BlockSpecs {
                 BlockSpecs.yellowStartH, null, null, BlockSpecs.startS],
             'onclick': ['onclick', BlockSpecs.getImageFrom('assets/blockicons/OnTouch', 'svg'),
                 BlockSpecs.yellowStart, null, null, BlockSpecs.yellowStartH, null, null, BlockSpecs.startS],
+            'onkey': ['onkey', BlockSpecs.getImageFrom('assets/blockicons/Keyboard', 'svg'),
+                BlockSpecs.yellowStart, 'k', 'ArrowRight', BlockSpecs.yellowStartH, null, null, BlockSpecs.startS],
             'ontouch': ['ontouch', BlockSpecs.getImageFrom('assets/blockicons/Bump', 'svg'),
                 BlockSpecs.yellowStart, null, null, BlockSpecs.yellowStartH, null, null, BlockSpecs.startS],
+            'ontouchsprite': ['ontouchsprite', BlockSpecs.getImageFrom('assets/blockicons/BumpSprite', 'svg'),
+                BlockSpecs.yellowStart, 'c', '', BlockSpecs.yellowStartH, null, null, BlockSpecs.startS],
             'message': ['message', sendshapes, BlockSpecs.yellowCmd, 'm', 'Orange',
                 BlockSpecs.yellowCmdH, null, null, BlockSpecs.cmdS],
 
@@ -282,6 +288,9 @@ export default class BlockSpecs {
 
         return {
             'onflag': Localization.localize('BLOCK_DESC_GREEN_FLAG'),
+            'onkey': 'Нажата клавиша ' + KeyboardKeys.label(b.getArgValue()),
+            'ontouchsprite': 'При касании выбранного персонажа' +
+                (b.arg && b.arg.argType == 'c' && b.arg.getTargetSprite() ? ': ' + b.arg.getTargetSprite().name : ''),
             'onclick': Localization.localize('BLOCK_DESC_ON_TAP', {
                 CHARACTER_NAME: spr.name
             }),

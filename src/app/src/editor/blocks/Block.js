@@ -205,6 +205,9 @@ export default class Block {
     }
 
     updateBlock () {
+        if (this.arg && this.arg.argType == 'c') {
+            this.arg.update();
+        }
         if (this.arg && this.arg.argType == 'p') {
             this.arg.updateIcon();
         }
@@ -317,7 +320,7 @@ export default class Block {
 
     duplicateBlock (dx, dy, spr) {
         var op = this.blocktype;
-        var specs = BlockSpecs.defs[op];
+        var specs = BlockSpecs.defs[op].concat();
         specs[4] = this.getArgValue();
         var bbx = new Block(specs, false, scaleMultiplier);
         setProps(bbx.div.style, {

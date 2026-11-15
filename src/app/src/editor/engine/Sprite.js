@@ -260,17 +260,31 @@ export default class Sprite {
         this.render();
     }
 
-    touchingAny () {
+    touchingSprite (targetId) {
+        // An unset or removed target must not turn into "touching anybody".
+        if (typeof targetId != 'string' || targetId.length == 0) {
+            return false;
+        }
+        return this.touchingAny(targetId);
+    }
+
+    touchingAny (targetId) {
         if (!this.shown) {
+            return false;
+        }
+        var page = this.div.parentNode;
+        if (!page) {
             return false;
         }
         setCanvasSize(ScratchJr.workingCanvas, 480, 360);
         setCanvasSize(ScratchJr.workingCanvas2, 480, 360);
-        var page = this.div.parentNode;
         var box = this.getBoxWithEffects(); // box with effects is a scale  and 1.5 times to count for rotations
         for (var i = 0; i < page.childElementCount; i++) {
             var other = page.childNodes[i].owner;
             if (!other) {
+                continue;
+            }
+            if (targetId !== undefined && other.id !== targetId) {
                 continue;
             }
             if (other.type == 'text') {

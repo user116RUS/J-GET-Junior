@@ -1,7 +1,7 @@
 [
   {
     "gallery": "samples",
-    "name": "Cat on Bat",
+    "name": "Robot on Bat",
     "version": "iOSv01",
     "deleted": "NO",
     "pos": 6,
@@ -19,7 +19,7 @@
           "cy": 33,
           "cx": 140,
           "fontsize": 56,
-          "str": "Cat on Bat",
+          "str": "Robot on Bat",
           "h": 66,
           "xcoor": 172,
           "type": "text",
@@ -79,8 +79,8 @@
         },
         "Cat 2": {
           "homeflip": false,
-          "cy": 116,
-          "cx": 83,
+          "cy": 126.5,
+          "cx": 75.5,
           "sounds": [
             "pop.mp3"
           ],
@@ -124,15 +124,15 @@
               ]
             ]
           ],
-          "md5": "Cat.svg",
-          "name": "Cat",
+          "md5": "Blue.svg",
+          "name": "Robot Blue",
           "ycoor": 171,
           "homex": 124,
           "homey": 171,
           "flip": false,
           "homescale": 0.5,
-          "w": 166,
-          "h": 232,
+          "w": 151,
+          "h": 253,
           "xcoor": 124,
           "homeshown": true,
           "defaultScale": 0.5
@@ -224,7 +224,7 @@
           "cy": 33,
           "cx": 45.5,
           "fontsize": 56,
-          "str": "Cat",
+          "str": "Robot",
           "h": 66,
           "xcoor": 84,
           "type": "text",
@@ -236,8 +236,8 @@
         "num": 1,
         "Cat 1": {
           "homeflip": false,
-          "cy": 116,
-          "cx": 83,
+          "cy": 126.5,
+          "cx": 75.5,
           "sounds": [
             "pop.mp3"
           ],
@@ -287,15 +287,15 @@
               ]
             ]
           ],
-          "md5": "Cat.svg",
-          "name": "Cat",
+          "md5": "Blue.svg",
+          "name": "Robot Blue",
           "ycoor": 195,
           "homex": 232,
           "homey": 195,
           "flip": false,
           "homescale": 0.7,
-          "w": 166,
-          "h": 232,
+          "w": 151,
+          "h": 253,
           "xcoor": 232,
           "homeshown": true,
           "defaultScale": 0.5

@@ -1,11 +1,13 @@
 import IO from './IO';
 import Localization from '../utils/Localization';
+import SoundLibrary from '../utils/SoundLibrary';
 
 let path;
 let samples;
 let backgrounds;
 let sprites;
 let sounds;
+let compatibilitySprites = [];
 let keys = {};
 
 export default class MediaLib {
@@ -41,6 +43,10 @@ export default class MediaLib {
             sprites = parsedResult.sprites;
             backgrounds = parsedResult.backgrounds;
             sounds = parsedResult.sounds;
+            compatibilitySprites = parsedResult.compatibilitySprites || [];
+            SoundLibrary.entries.forEach(sound => {
+                if (sounds.indexOf(sound.id) < 0) sounds.push(sound.id);
+            });
 
             MediaLib.localizeMediaNames();
             MediaLib.generateKeys();
@@ -62,6 +68,11 @@ export default class MediaLib {
     }
 
     static generateKeys () {
+        // Legacy IDs resolve to original J-GET artwork without adding duplicate
+        // robots to the character picker or changing saved project identifiers.
+        compatibilitySprites.forEach(sprite => {
+            keys[sprite.md5] = {width: sprite.width, height: sprite.height, name: sprite.name};
+        });
         for (let i = 0; i < backgrounds.length; i++) {
             var bg = backgrounds[i];
             keys[bg.md5] = {width: bg.width, height: bg.height, name: bg.name};

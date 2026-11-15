@@ -103,3 +103,13 @@ body {
 	padding-top: 23px;
 	padding-bottom: 23px;
 }
+
+/* Original J-GET Junior text guides, with localized descriptions. */
+.junior-reference { box-sizing: border-box; padding: 24px 32px; font-family: Arial, sans-serif; color: #18384b; }
+.junior-reference h1 { font-size: 28px; margin-bottom: 24px; }
+.junior-reference-layout { display: flex; align-items: flex-start; }
+.junior-reference nav { width: 44%; flex-shrink: 0; }
+.junior-reference button { display: block; width: 100%; margin-bottom: 6px; padding: 10px 14px; text-align: left; font: 16px Arial, sans-serif; color: #18384b; border: 1px solid #d3e0e7; border-radius: 8px; background: #f5f9fb; }
+.junior-reference button[aria-pressed=true] { background: #178cc7; color: white; border-color: #178cc7; }
+.junior-reference section { padding: 0 28px; font-size: 20px; line-height: 1.55; }
+.junior-reference h2 { font-size: 24px; }

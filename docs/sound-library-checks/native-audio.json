@@ -1,0 +1,483 @@
+{
+  "decoded": [
+    {
+      "channels": 1,
+      "duration": 0.8475208333333333,
+      "id": "library/cat.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.16652083333333334,
+      "id": "library/dog.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.26266666666666666,
+      "id": "library/duck.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.2452916666666667,
+      "id": "library/cow.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.3119166666666666,
+      "id": "library/horse.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.7356875,
+      "id": "library/owl.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.34829166666666667,
+      "id": "library/bird.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.37222916666666667,
+      "id": "library/goose.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.32285416666666666,
+      "id": "library/frog.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.937125,
+      "id": "library/sheep.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.5519166666666666,
+      "id": "library/rooster.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 3.9009375,
+      "id": "library/wolf.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.5673333333333332,
+      "id": "library/monkey.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.9518333333333335,
+      "id": "library/seagulls.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.4444791666666665,
+      "id": "library/guinea-pig.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.6918333333333333,
+      "id": "library/drop.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 6,
+      "id": "library/rain.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.52,
+      "id": "library/wave.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.179583333333333,
+      "id": "library/crickets.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 6,
+      "id": "library/thunder.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 6,
+      "id": "library/jungle-frogs.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.121625,
+      "id": "library/splash.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.9504583333333334,
+      "id": "library/ripples.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 6,
+      "id": "library/tropical-birds.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2,
+      "id": "library/piano.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.0346458333333333,
+      "id": "library/guitar.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 6,
+      "id": "library/xylophone.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.888979166666667,
+      "id": "library/drums.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.012645833333333,
+      "id": "library/space-dance.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.32285416666666666,
+      "id": "library/jump.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.18447916666666667,
+      "id": "library/coin.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 0.32285416666666666,
+      "id": "library/boing.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.98325,
+      "id": "library/magic.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.0755,
+      "id": "library/win.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 5.6269375,
+      "id": "library/chords.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 3.8167708333333334,
+      "id": "library/clapping.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.086708333333333,
+      "id": "library/bubbles.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.5367291666666665,
+      "id": "library/tada.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.937125,
+      "id": "library/horn.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 1.98325,
+      "id": "library/car.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 2.16775,
+      "id": "library/train.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 4.981208333333333,
+      "id": "library/doorbell.wav",
+      "sampleRate": 48000
+    },
+    {
+      "channels": 1,
+      "duration": 3.4130416666666665,
+      "id": "library/phone.wav",
+      "sampleRate": 48000
+    }
+  ],
+  "metadata": [
+    {
+      "duration": 0.847528,
+      "id": "library/cat.wav"
+    },
+    {
+      "duration": 0.166531,
+      "id": "library/dog.wav"
+    },
+    {
+      "duration": 0.262676,
+      "id": "library/duck.wav"
+    },
+    {
+      "duration": 1.245306,
+      "id": "library/cow.wav"
+    },
+    {
+      "duration": 1.311927,
+      "id": "library/horse.wav"
+    },
+    {
+      "duration": 0.348299,
+      "id": "library/bird.wav"
+    },
+    {
+      "duration": 0.735692,
+      "id": "library/owl.wav"
+    },
+    {
+      "duration": 1.937143,
+      "id": "library/sheep.wav"
+    },
+    {
+      "duration": 1.551927,
+      "id": "library/rooster.wav"
+    },
+    {
+      "duration": 0.372245,
+      "id": "library/goose.wav"
+    },
+    {
+      "duration": 0.322857,
+      "id": "library/frog.wav"
+    },
+    {
+      "duration": 3.900952,
+      "id": "library/wolf.wav"
+    },
+    {
+      "duration": 2.951837,
+      "id": "library/seagulls.wav"
+    },
+    {
+      "duration": 1.567347,
+      "id": "library/monkey.wav"
+    },
+    {
+      "duration": 2.44449,
+      "id": "library/guinea-pig.wav"
+    },
+    {
+      "duration": 6,
+      "id": "library/rain.wav"
+    },
+    {
+      "duration": 4.52,
+      "id": "library/wave.wav"
+    },
+    {
+      "duration": 0.691837,
+      "id": "library/drop.wav"
+    },
+    {
+      "duration": 4.179592,
+      "id": "library/crickets.wav"
+    },
+    {
+      "duration": 6,
+      "id": "library/thunder.wav"
+    },
+    {
+      "duration": 6,
+      "id": "library/jungle-frogs.wav"
+    },
+    {
+      "duration": 6,
+      "id": "library/tropical-birds.wav"
+    },
+    {
+      "duration": 2.121633,
+      "id": "library/splash.wav"
+    },
+    {
+      "duration": 1.950476,
+      "id": "library/ripples.wav"
+    },
+    {
+      "duration": 2,
+      "id": "library/piano.wav"
+    },
+    {
+      "duration": 2.034649,
+      "id": "library/guitar.wav"
+    },
+    {
+      "duration": 6,
+      "id": "library/xylophone.wav"
+    },
+    {
+      "duration": 4.88898,
+      "id": "library/drums.wav"
+    },
+    {
+      "duration": 4.012653,
+      "id": "library/space-dance.wav"
+    },
+    {
+      "duration": 5.626939,
+      "id": "library/chords.wav"
+    },
+    {
+      "duration": 0.322857,
+      "id": "library/jump.wav"
+    },
+    {
+      "duration": 0.18449,
+      "id": "library/coin.wav"
+    },
+    {
+      "duration": 1.983265,
+      "id": "library/magic.wav"
+    },
+    {
+      "duration": 2.07551,
+      "id": "library/win.wav"
+    },
+    {
+      "duration": 0.322857,
+      "id": "library/boing.wav"
+    },
+    {
+      "duration": 3.81678,
+      "id": "library/clapping.wav"
+    },
+    {
+      "duration": 4.086712,
+      "id": "library/bubbles.wav"
+    },
+    {
+      "duration": 2.536735,
+      "id": "library/tada.wav"
+    },
+    {
+      "duration": 1.937143,
+      "id": "library/horn.wav"
+    },
+    {
+      "duration": 1.983265,
+      "id": "library/car.wav"
+    },
+    {
+      "duration": 2.167755,
+      "id": "library/train.wav"
+    },
+    {
+      "duration": 4.981224,
+      "id": "library/doorbell.wav"
+    },
+    {
+      "duration": 3.413061,
+      "id": "library/phone.wav"
+    }
+  ],
+  "pass": true,
+  "played": [
+    {
+      "currentTime": 0.847528,
+      "duration": 0.847528,
+      "elapsedMs": 1421,
+      "ended": true,
+      "id": "library/cat.wav",
+      "playingEvent": true,
+      "wrapperDone": true
+    },
+    {
+      "currentTime": 6,
+      "duration": 6,
+      "elapsedMs": 6079,
+      "ended": true,
+      "id": "library/rain.wav",
+      "playingEvent": true,
+      "wrapperDone": true
+    }
+  ],
+  "previews": [
+    {
+      "duration": 0.847528,
+      "elapsedMs": 885,
+      "ended": true,
+      "id": "library/cat.wav",
+      "independent": true,
+      "playingEvent": true,
+      "registeredPaused": true,
+      "registeredUnchanged": true,
+      "sourcePrefix": "data:audio/wav;base64,"
+    },
+    {
+      "duration": 6,
+      "elapsedMs": 6036,
+      "ended": true,
+      "id": "library/rain.wav",
+      "independent": true,
+      "playingEvent": true,
+      "registeredPaused": true,
+      "registeredUnchanged": true,
+      "sourcePrefix": "data:audio/wav;base64,"
+    }
+  ],
+  "url": "file:///private/tmp/sjr-sound-native/ScratchJr.app/Contents/Resources/app/src/app/index.html",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 26_6_2) AppleWebKit/537.36 (KHTML, like Gecko) ScratchJrClassroom/1.3.2-classroom.4 Chrome/59.0.3071.115 Electron/1.8.2-beta.3 Safari/537.36"
+}

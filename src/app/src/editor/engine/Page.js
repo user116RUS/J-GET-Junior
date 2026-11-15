@@ -525,7 +525,10 @@ export default class Page {
         var me = this;
         sprite.getAsset(gotImage);
         function gotImage (dataurl) {
-            sprite.setCostume(dataurl, me.spriteAdded);
+            sprite.setCostume(dataurl, function (updated) {
+                me.spriteAdded(updated);
+                ScratchJr.stage.updatePageBlocks();
+            });
         }
     }
 
@@ -536,6 +539,7 @@ export default class Page {
         }
         sprite.name = cid;
         sprite.thumbnail.childNodes[1].textContent = cid;
+        ScratchJr.stage.updatePageBlocks();
         Undo.record({
             action: 'modify',
             where: this.id,

@@ -1,6 +1,7 @@
 import {isAndroid} from './lib';
 import Sound from './Sound';
 import iOS from '../iPad/iOS';
+import SoundLibrary from './SoundLibrary';
 
 ////////////////////////////////////////////////////
 /// Sound Playing
@@ -47,7 +48,7 @@ export default class ScratchAudio {
         for (var i = 0; i < defaultSounds.length; i++) {
             ScratchAudio.addSound(prefix + 'sounds/', defaultSounds[i], uiSounds);
         }
-        ScratchAudio.addSound(prefix, 'pop.mp3', projectSounds);
+        SoundLibrary.entries.forEach(sound => ScratchAudio.addSound(prefix + 'sounds/', sound.id, projectSounds));
     }
 
     static addSound (url, snd, dict, fcn) {
@@ -93,6 +94,7 @@ export default class ScratchAudio {
 
     static loadFromLocal (dir, md5, fcn) {
         if (projectSounds[md5] != undefined) {
+            if (fcn) fcn(md5);
             return;
         }
         ScratchAudio.addSound(dir, md5, projectSounds, fcn);

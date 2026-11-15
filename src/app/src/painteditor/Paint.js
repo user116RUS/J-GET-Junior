@@ -142,6 +142,7 @@ export default class Paint {
     ///////////////////////////////////////////
 
     static init (w, h) {
+        window.addEventListener('scratchjr-storage-error', Paint.storageError);
         paintFrame = document.getElementById('paintframe');
         paintFrame.style.width = w + 'px';
         paintFrame.style.height = h + 'px';
@@ -163,8 +164,7 @@ export default class Paint {
 
     static open (bkg, md5, sname, cname, cscale, sw, sh) {
         iOS.analyticsEvent('editor', 'paint_editor_opened', bkg ? 'bkg' : 'character');
-        PaintUndo.buffer = [];
-        PaintUndo.index = 0;
+        PaintUndo.reset();
         maxZoom = 5;
         minZoom = 1;
         workspaceWidth = 432;
@@ -350,12 +350,18 @@ export default class Paint {
         window.onmousemove = undefined;
         Alert.close();
         Paint.clearWorkspace();
-        PaintUndo.buffer = [];
-        PaintUndo.index = 0;
+        PaintUndo.reset();
         Ghost.maskData = {};
         setTimeout(function () {
             saving = false;
         }, 500); // delay so it doesn't open the info box
+    }
+
+    static storageError () {
+        if (saving && frame.style.display == 'none') {
+            saving = false;
+            Alert.close();
+        }
     }
 
     static backToProject (e) {
@@ -1283,7 +1289,7 @@ export default class Paint {
 
     static saveSprite (fcn) {
         var cname = document.forms.spriteform.name.value;
-        var worthsaving = (gn('layer1').childElementCount > 0) && (PaintUndo.index > 0);
+        var worthsaving = (gn('layer1').childElementCount > 0) && PaintUndo.hasChanges;
         if (worthsaving) {
             saving = true;
             if (fcn) {

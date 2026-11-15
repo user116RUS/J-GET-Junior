@@ -25,107 +25,35 @@ export function inappAbout () {
     }
 }
 
+function referenceGuide (prefix, keys) {
+    const list = gn(prefix + '-choices');
+    const title = gn(prefix + '-key-header');
+    const description = gn(prefix + '-key-description');
+    const base = prefix === 'interface' ? 'INTERFACE_GUIDE_' : 'PAINT_GUIDE_';
+    keys.forEach((key, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = Localization.localize(base + key, {N: index + 1});
+        button.onclick = () => {
+            Array.prototype.forEach.call(list.children, child => child.setAttribute('aria-pressed', 'false'));
+            button.setAttribute('aria-pressed', 'true');
+            title.textContent = button.textContent;
+            description.textContent = Localization.localize(base + key + '_DESCRIPTION');
+        };
+        list.appendChild(button);
+        if (index === 0) button.onclick();
+    });
+}
+
 export function inappInterfaceGuide () {
-    var interfaceKeyHeaderNode = gn('interface-key-header');
-    var interfaceKeyDescriptionNode = gn('interface-key-description');
-
-    interfaceKeyHeaderNode.textContent = Localization.localize('INTERFACE_GUIDE_SAVE', {N: 1});
-    interfaceKeyDescriptionNode.textContent = Localization.localize('INTERFACE_GUIDE_SAVE_DESCRIPTION');
-
-    var interfaceKeys = [
-        'SAVE',
-        'STAGE',
-        'PRESENTATION_MODE',
-        'GRID',
-        'CHANGE_BG',
-        'ADD_TEXT',
-        'RESET_CHAR',
-        'GREEN_FLAG',
-        'PAGES',
-        'PROJECT_INFO',
-        'UNDO_REDO',
-        'PROGRAMMING_SCRIPT',
-        'PROGRAMMING_AREA',
-        'BLOCKS_PALETTE',
-        'BLOCKS_CATEGORIES',
-        'CHARACTERS'
-    ];
-
-    var interfaceDescriptions = [];
-    for (var i = 0; i < interfaceKeys.length; i++) {
-        var key = interfaceKeys[i];
-        interfaceDescriptions.push([
-            Localization.localize('INTERFACE_GUIDE_' + key, { N: i + 1 }),
-            Localization.localize('INTERFACE_GUIDE_' + key + '_DESCRIPTION')
-        ]);
-    }
-
-
-    var currentButton = document.getElementById('interface-button-save');
-
-    var switchHelp = function (e) {
-        var target = e.target;
-        if (target.className == 'interface-button-text') {
-            var descriptionId = parseInt(target.innerText - 1); // eslint-disable-line radix
-            interfaceKeyHeaderNode.textContent = interfaceDescriptions[descriptionId][0];
-            interfaceKeyDescriptionNode.textContent = interfaceDescriptions[descriptionId][1];
-            currentButton.className = 'interface-button';
-            currentButton = target.parentNode;
-            currentButton.className = currentButton.className + ' interface-button-selected';
-            window.parent.ScratchAudio.sndFXWithVolume('keydown.wav', 0.3);
-        }
-    };
-    document.addEventListener('mousedown', switchHelp, false);
+    referenceGuide('interface', ['SAVE', 'STAGE', 'PRESENTATION_MODE', 'GRID', 'CHANGE_BG', 'ADD_TEXT',
+        'RESET_CHAR', 'GREEN_FLAG', 'PAGES', 'PROJECT_INFO', 'UNDO_REDO', 'PROGRAMMING_SCRIPT',
+        'PROGRAMMING_AREA', 'BLOCKS_PALETTE', 'BLOCKS_CATEGORIES', 'CHARACTERS']);
 }
 
 export function inappPaintEditorGuide () {
-    var paintKeyHeaderNode = gn('paint-key-header');
-    var paintKeyDescriptionNode = gn('paint-key-description');
-
-    paintKeyHeaderNode.textContent = Localization.localize('PAINT_GUIDE_UNDO', { N: 1 });
-    paintKeyDescriptionNode.textContent = Localization.localize('PAINT_GUIDE_UNDO_DESCRIPTION');
-
-    var paintKeys = [
-        'UNDO',
-        'REDO',
-        'SHAPE',
-        'CHARACTER_NAME',
-        'CUT',
-        'DUPLICATE',
-        'ROTATE',
-        'DRAG',
-        'SAVE',
-        'FILL',
-        'CAMERA',
-        'COLOR',
-        'LINE_WIDTH'
-    ];
-
-    var paintDescriptions = [];
-    for (var i = 0; i < paintKeys.length; i++) {
-        var key = paintKeys[i];
-        paintDescriptions.push([
-            Localization.localize('PAINT_GUIDE_' + key, { N: i + 1 }),
-            Localization.localize('PAINT_GUIDE_' + key + '_DESCRIPTION')
-        ]);
-    }
-
-
-    var currentButton = document.getElementById('paint-button-undo');
-
-    var switchHelp = function (e) {
-        var target = e.target;
-        if (target.className == 'paint-button-text') {
-            var descriptionId = parseInt(target.innerText - 1);
-            paintKeyHeaderNode.textContent = paintDescriptions[descriptionId][0];
-            paintKeyDescriptionNode.textContent = paintDescriptions[descriptionId][1];
-            currentButton.className = 'paint-button';
-            currentButton = target.parentNode;
-            currentButton.className = currentButton.className + ' paint-button-selected';
-            window.parent.ScratchAudio.sndFXWithVolume('keydown.wav', 0.3);
-        }
-    };
-    document.addEventListener('mousedown', switchHelp, false);
+    referenceGuide('paint', ['UNDO', 'REDO', 'SHAPE', 'CHARACTER_NAME', 'CUT', 'DUPLICATE', 'ROTATE',
+        'DRAG', 'SAVE', 'FILL', 'CAMERA', 'COLOR', 'LINE_WIDTH']);
 }
 
 export function inappBlocksGuide () {

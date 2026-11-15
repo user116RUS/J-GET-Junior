@@ -4,8 +4,10 @@ import Menu from './Menu';
 import Undo from '../ui/Undo';
 import {setCanvasSize, setProps, writeText, scaleMultiplier,
     newHTML, newDiv, newCanvas, getStringSize, isTablet,
-    newP, globalx, globaly} from '../../utils/lib';
+    globalx, globaly} from '../../utils/lib';
 import Localization from '../../utils/Localization';
+import KeyboardKeys from '../../utils/KeyboardKeys';
+import SoundLibrary from '../../utils/SoundLibrary';
 
 /*
 Argument types
@@ -16,6 +18,7 @@ m: regular menu with icons
 s: text for soundblock
 r: number for recorded sound block
 p: page icons
+c: character on the same page
 
 */
 export default class BlockArg {
@@ -24,6 +27,14 @@ export default class BlockArg {
         this.type = 'blockarg';
         this.argType = block.spec[3];
         switch (this.argType) {
+        case 'c':
+            this.argValue = this.normalizeSpriteId(block.spec[4]);
+            this.div = this.addSpriteArgument();
+            break;
+        case 'k':
+            this.argValue = KeyboardKeys.normalize(block.spec[4]);
+            this.div = this.addKeyArgument();
+            break;
         case 'n':
             this.argValue = block.spec[4];
             this.div = this.addNumArg();
@@ -58,14 +69,7 @@ export default class BlockArg {
             break;
         case 's':
             this.argValue = block.spec[4];
-            this.div = newDiv(block.div, 2, 46, 60, 20, {
-                position: 'absolute',
-                zoom: (block.scale * 100) + '%'
-            });
-            var p = newP(this.div, this.argValue.split('.')[0], {
-                width: '60px'
-            });
-            p.setAttribute('class', 'soundname');
+            this.div = this.addSoundArgument();
             break;
         case 'r':
             this.argValue = block.spec[4];
@@ -81,7 +85,28 @@ export default class BlockArg {
         }
     }
 
-    update () {
+    update (spr) {
+        if (this.argType == 's') {
+            const sound = SoundLibrary.get(this.argValue);
+            this.soundLabel.textContent = sound.shortName;
+            this.div.title = sound.name + '. Выбрать звук';
+            this.div.setAttribute('aria-label', sound.name + '. Выбрать звук');
+        }
+        if (this.argType == 'c') {
+            if (spr) this.sprite = spr;
+            const target = this.getTargetSprite();
+            this.spriteLabel.textContent = target ? target.name : (this.argValue ? 'Нет на сцене' : 'Выбрать');
+            const description = target ? 'При касании персонажа «' + target.name + '»' :
+                (this.argValue ? 'Выбранного персонажа нет на этой сцене' : 'Выберите персонажа для касания');
+            this.div.title = description;
+            this.div.setAttribute('aria-label', description + '. Выбрать персонажа');
+            this.div.setAttribute('data-unresolved', this.argValue && !target ? 'true' : 'false');
+            this.drawSpriteIcon(this.spriteIcon, target);
+        }
+        if (this.argType == 'k') {
+            this.keyLabel.textContent = KeyboardKeys.label(this.argValue);
+            this.div.setAttribute('aria-label', 'Нажата клавиша ' + this.keyLabel.textContent + '. Выбрать клавишу');
+        }
         if (this.argType == 'r') {
             this.div.childNodes[0].textContent = this.argValue;
         }
@@ -202,6 +227,22 @@ export default class BlockArg {
     }
 
     setValue (val) {
+        if (this.argType == 's') {
+            if (!SoundLibrary.has(val)) return;
+            this.argValue = val;
+            this.update();
+            return;
+        }
+        if (this.argType == 'c') {
+            this.argValue = this.normalizeSpriteId(val);
+            this.update();
+            return;
+        }
+        if (this.argType == 'k') {
+            this.argValue = KeyboardKeys.normalize(val);
+            this.update();
+            return;
+        }
         if (!this.input) {
             return;
         }
@@ -216,6 +257,121 @@ export default class BlockArg {
     /////////////////////////////////
     // Menu drop downs
     //////////////////////////////
+
+    normalizeSpriteId (value) {
+        return typeof value == 'string' && value != 'null' && value != 'undefined' ? value : '';
+    }
+
+    getSpriteChoices () {
+        const parent = this.daddy.div.parentNode;
+        const sprite = parent && parent.owner && parent.owner.spr ? parent.owner.spr : this.sprite;
+        const page = sprite && sprite.page;
+        if (!page || !page.div) return [];
+        return Array.prototype.map.call(page.div.childNodes, node => node.owner)
+            .filter(other => other && other.type == 'sprite' && other.id != sprite.id);
+    }
+
+    getTargetSprite () {
+        return this.getSpriteChoices().filter(sprite => sprite.id === this.argValue)[0];
+    }
+
+    drawSpriteIcon (canvas, sprite) {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+        if (sprite && sprite.img && sprite.img.complete && sprite.border) {
+            sprite.drawMyImage(canvas, canvas.width, canvas.height);
+        }
+        // drawMyImage/setCanvasSize also set inline CSS dimensions. Keep the
+        // two-times-resolution bitmap inside its smaller visible button.
+        canvas.style.width = (canvas.width / 2) + 'px';
+        canvas.style.height = (canvas.height / 2) + 'px';
+    }
+
+    addSpriteArgument () {
+        const button = newHTML('button', 'spritearg', this.daddy.div);
+        button.type = 'button';
+        button.title = 'При касании выбранного персонажа';
+        button.setAttribute('aria-haspopup', 'dialog');
+        button.setAttribute('aria-label', 'Выберите персонажа для касания');
+        button.style.zoom = (this.daddy.scale * 100) + '%';
+        this.spriteIcon = newHTML('canvas', 'spritearg-icon', button);
+        setCanvasSize(this.spriteIcon, 40, 40);
+        this.drawSpriteIcon(this.spriteIcon, null);
+        this.spriteLabel = newHTML('span', 'spritearg-value', button);
+        this.spriteLabel.textContent = 'Выбрать';
+        newHTML('span', 'spritearg-arrow', button).textContent = '▾';
+        if (this.daddy.inpalette) {
+            button.className += ' spritearg-inpalette';
+            button.tabIndex = -1;
+            button.style.pointerEvents = 'none';
+        } else {
+            button.onmousedown = evt => this.pressDropDown(evt, this.closeSpriteMenu);
+            button.onkeydown = evt => {
+                if (evt.key === 'Enter' || evt.key === ' ') this.pressDropDown(evt, this.closeSpriteMenu);
+            };
+        }
+        this.daddy.div.height = (this.daddy.inpalette ? 76 : 84) * this.daddy.scale;
+        this.daddy.div.style.height = this.daddy.div.height + 'px';
+        return button;
+    }
+
+    closeSpriteMenu (e, mu, b, id) {
+        e.preventDefault();
+        e.stopPropagation();
+        const arg = b.owner.arg;
+        // The scene may have changed while the picker was open.
+        if (!arg.getSpriteChoices().some(sprite => sprite.id === id)) {
+            Menu.closeMyOpenMenu();
+            return;
+        }
+        const previous = arg.argValue;
+        arg.setValue(id);
+        Menu.closeMyOpenMenu();
+        if (previous != arg.argValue) {
+            const spr = b.parentNode.owner.spr;
+            Undo.record({action: 'scripts', where: spr.div.parentNode.owner.id, who: spr.id});
+            ScratchJr.storyStart('BlockArg.prototype.closeSpriteMenu');
+        }
+    }
+
+    addKeyArgument () {
+        const button = newHTML('button', 'keyarg', this.daddy.div);
+        button.type = 'button';
+        button.title = 'Нажата клавиша. Выбрать клавишу';
+        button.setAttribute('aria-haspopup', 'dialog');
+        button.style.zoom = (this.daddy.scale * 100) + '%';
+        this.keyLabel = newHTML('span', 'keyarg-value', button);
+        this.keyLabel.textContent = KeyboardKeys.label(this.argValue);
+        newHTML('span', 'keyarg-arrow', button).textContent = '▾';
+        if (this.daddy.inpalette) {
+            button.className += ' keyarg-inpalette';
+            button.tabIndex = -1;
+            button.style.pointerEvents = 'none';
+        } else {
+            button.onmousedown = evt => this.pressDropDown(evt, this.closeKeyMenu);
+            button.onkeydown = evt => {
+                if (evt.key === 'Enter' || evt.key === ' ') {
+                    this.pressDropDown(evt, this.closeKeyMenu);
+                }
+            };
+        }
+        this.daddy.div.height = (this.daddy.inpalette ? 76 : 82) * this.daddy.scale;
+        this.daddy.div.style.height = this.daddy.div.height + 'px';
+        return button;
+    }
+
+    closeKeyMenu (e, mu, b, key) {
+        e.preventDefault();
+        e.stopPropagation();
+        const arg = b.owner.arg;
+        const previous = arg.argValue;
+        arg.setValue(key);
+        Menu.closeMyOpenMenu();
+        if (arg.argValue != previous) {
+            const spr = b.parentNode.owner.spr;
+            Undo.record({action: 'scripts', where: spr.div.parentNode.owner.id, who: spr.id});
+            ScratchJr.storyStart('BlockArg.prototype.closeKeyMenu');
+        }
+    }
 
     getIconFrom (key, list) {
         for (var i = 0; i < list.length; i++) {
@@ -463,4 +619,37 @@ export default class BlockArg {
         ctx.drawImage(this.div, 0, 0, this.div.width, this.div.height, 0, 0,
             this.div.width * block.scale, this.div.height * block.scale);
     }
+
+    addSoundArgument () {
+        const button = newHTML('button', 'soundarg', this.daddy.div);
+        button.type = 'button';
+        button.setAttribute('aria-haspopup', 'dialog');
+        button.style.zoom = (this.daddy.scale * 100) + '%';
+        const sound = SoundLibrary.get(this.argValue);
+        button.title = sound.name + '. Выбрать звук';
+        button.setAttribute('aria-label', button.title);
+        this.soundLabel = newHTML('span', 'soundarg-value', button);
+        this.soundLabel.textContent = sound.shortName;
+        newHTML('span', 'soundarg-arrow', button).textContent = '▾';
+        button.onmousedown = evt => this.pressDropDown(evt, this.closeSoundMenu);
+        button.onkeydown = evt => {
+            if (evt.key === 'Enter' || evt.key === ' ') this.pressDropDown(evt, this.closeSoundMenu);
+        };
+        return button;
+    }
+
+    closeSoundMenu (e, mu, b, id) {
+        e.preventDefault();
+        e.stopPropagation();
+        const arg = b.owner.arg;
+        const previous = arg.argValue;
+        arg.setValue(id);
+        Menu.closeMyOpenMenu();
+        if (arg.argValue != previous && !b.owner.inpalette) {
+            const spr = b.parentNode.owner.spr;
+            Undo.record({action: 'scripts', where: spr.div.parentNode.owner.id, who: spr.id});
+            ScratchJr.storyStart('BlockArg.prototype.closeSoundMenu');
+        }
+    }
+
 }

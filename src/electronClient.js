@@ -67,7 +67,30 @@ ipcRenderer.on('databaseRestored', function() {
 
 
 
+function requestStorage(channel, ...args) {
+    const result = ipcRenderer.sendSync(channel, ...args);
+    if (result && result.storageError) {
+        window.dispatchEvent(new Event('scratchjr-storage-error'));
+        throw new Error(result.storageError);
+    }
+    return result;
+}
+
 class ElectronDesktopInterface {
+
+    onEditorClose(save) {
+        ipcRenderer.on('save-before-close', (event, discardDrawing) => {
+            const done = result => ipcRenderer.send('editor-close-result', result);
+            try {
+                save(discardDrawing, done);
+            } catch (error) {
+                done('failed');
+                throw error;
+            }
+        });
+        window.addEventListener('scratchjr-storage-error', () => ipcRenderer.send('editor-close-result', 'failed'));
+        ipcRenderer.send('editor-ready');
+    }
 
 
     constructor () {
@@ -75,12 +98,12 @@ class ElectronDesktopInterface {
     }
 
     database_stmt(json) {
-        return ipcRenderer.sendSync('database_stmt', json);
+        return requestStorage('database_stmt', json);
 
     }
     database_query(json) {
         if (DEBUG_DATABASE) debugLog('beginning database_query', json);
-        let res = ipcRenderer.sendSync('database_query', json);
+        let res = requestStorage('database_query', json);
         if (DEBUG_DATABASE) debugLog('end database_query', res);
         return res;
 
@@ -98,7 +121,7 @@ class ElectronDesktopInterface {
     io_getmedia(file){
 
         if (DEBUG_FILEIO) debugLog('io_getmedia', file);
-        return ipcRenderer.sendSync('io_getmedia', file);
+        return requestStorage('io_getmedia', file);
 
     }
 
@@ -118,20 +141,20 @@ class ElectronDesktopInterface {
     io_getmedialen(file, key){
 
         if (DEBUG_FILEIO) debugLog('io_getmedialen', file, key);
-        return ipcRenderer.sendSync('io_getmedialen', file, key);
+        return requestStorage('io_getmedialen', file, key);
 
     }
 
     io_setmedia(str,  ext){
         if (DEBUG_FILEIO)  debugLog('io_setmedia', str, ext);
-        return ipcRenderer.sendSync('io_setmedia', str,  ext);
+        return requestStorage('io_setmedia', str,  ext);
 
     }
 
     io_setmedianame(str, name, ext){
         if (DEBUG_FILEIO) debugLog('io_setmedianame', name, ext);
 
-        return ipcRenderer.sendSync('io_setmedianame', str, name, ext);
+        return requestStorage('io_setmedianame', str, name, ext);
     }
 
     io_getmd5(str){
@@ -142,7 +165,7 @@ class ElectronDesktopInterface {
 
     io_remove(str){
         if (DEBUG_NYI)  debugLog('io_remove - NYI', str);
-        return ipcRenderer.sendSync('io_remove', str);
+        return requestStorage('io_remove', str);
 
     }
 
@@ -150,7 +173,7 @@ class ElectronDesktopInterface {
         if (DEBUG_NYI) {
             debugLog('io_cleanassets - NYI', str);
         }
-        return ipcRenderer.sendSync('io_cleanassets', str);
+        return requestStorage('io_cleanassets', str);
 
     }
 
@@ -158,12 +181,18 @@ class ElectronDesktopInterface {
     io_registersound(dir, name){
 
         if (!this.currentAudio[name]) {
-            let dataUri = ipcRenderer.sendSync('io_getAudioData', name);
+            let dataUri = requestStorage('io_getAudioData', name);
             this.loadSoundFromDataURI(name, dataUri);
 
         }
 
 
+    }
+
+    io_getsoundsource(name) {
+        this.io_registersound('', name);
+        const audio = this.currentAudio[name];
+        return audio ? audio.src : null;
     }
 
     loadSoundFromDataURI(name, dataUri) {
@@ -176,6 +205,7 @@ class ElectronDesktopInterface {
                 iOS.soundDone(name); // eslint-disable-line no-undef
 
             };
+            audio.onerror = audio.onended;
             
             this.currentAudio[name] = audio;
         }
@@ -185,7 +215,7 @@ class ElectronDesktopInterface {
         if (DEBUG_FILEIO) debugLog('io_getfile', str);
 
         // returns a file from the scratch jr documents folder
-        return ipcRenderer.sendSync('io_getfile', str);
+        return requestStorage('io_getfile', str);
 
 
     }
@@ -205,7 +235,7 @@ class ElectronDesktopInterface {
     io_setfile(name, btoa_str){
         if (DEBUG_FILEIO)  debugLog('io_setfile', name, btoa_str);
 
-        return ipcRenderer.sendSync('io_setfile', {name: name, contents: btoa_str});
+        return requestStorage('io_setfile', {name: name, contents: btoa_str});
     }
 
 
@@ -240,8 +270,17 @@ class ElectronDesktopInterface {
         }
 
         //https://medium.com/@Jeff_Duke_io/working-with-html5-audio-in-electron-645b2d2202bd
+        const playback = (audioElement.scratchJrPlayback || 0) + 1;
+        audioElement.scratchJrPlayback = playback;
+        const finishPlayback = () => {
+            // A paused play() promise may reject after the same sound has restarted.
+            if (this.currentAudio[name] === audioElement && audioElement.scratchJrPlayback === playback) {
+                iOS.soundDone(name); // eslint-disable-line no-undef
+            }
+        };
 
         try {
+            audioElement.currentTime = 0;
             let playPromise = audioElement.play();
 
             // In browsers that don’t yet support this functionality,
@@ -254,10 +293,12 @@ class ElectronDesktopInterface {
 					// Automatic playback failed.
 					// Show a UI element to let the user manually start playback.
 					debugLog(error);
+                        finishPlayback();
 				  });
             }
         }  catch (e) {
             debugLog('could not play sound', e);
+            setTimeout(finishPlayback, 0);
         }
     }
 
@@ -268,7 +309,9 @@ class ElectronDesktopInterface {
 		let audioElement = this.currentAudio[name];
     
         if (audioElement) {
-          audioElement.pause();  
+          audioElement.scratchJrPlayback = (audioElement.scratchJrPlayback || 0) + 1;
+          audioElement.pause();
+          audioElement.currentTime = 0;
         }
         
     }

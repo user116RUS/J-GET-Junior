@@ -19,7 +19,9 @@ export default class Prims {
         Prims.table.onflag = Prims.Ignore;
         Prims.table.onmessage = Prims.Ignore;
         Prims.table.onclick = Prims.Ignore;
+        Prims.table.onkey = Prims.Ignore;
         Prims.table.ontouch = Prims.OnTouch;
+        Prims.table.ontouchsprite = Prims.OnTouchSprite;
         Prims.table.onchat = Prims.Ignore;
         Prims.table.repeat = Prims.Repeat;
         Prims.table.forward = Prims.Forward;
@@ -565,6 +567,14 @@ export default class Prims {
     static OnTouch (strip) {
         var s = strip.spr;
         if (s.touchingAny()) {
+            strip.stack.push(strip.firstBlock);
+            strip.thisblock = strip.thisblock.next;
+        }
+        strip.waitTimer = tinterval;
+    }
+
+    static OnTouchSprite (strip) {
+        if (strip.spr.touchingSprite(strip.thisblock.getArgValue())) {
             strip.stack.push(strip.firstBlock);
             strip.thisblock = strip.thisblock.next;
         }

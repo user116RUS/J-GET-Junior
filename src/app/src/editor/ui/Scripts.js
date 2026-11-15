@@ -3,6 +3,7 @@
 ///////////////////////////////////////////////
 
 import ScratchJr from '../ScratchJr';
+import SoundLibrary from '../../utils/SoundLibrary';
 import Block from '../blocks/Block';
 import BlockSpecs from '../blocks/BlockSpecs';
 import ScriptsPane from './ScriptsPane';
@@ -27,6 +28,10 @@ export default class Scripts {
     }
 
     activate () {
+        for (var i = 0; i < this.sc.childNodes.length; i++) {
+            const block = this.sc.childNodes[i].owner;
+            if (block && block.arg && block.arg.argType == 'c') block.update(this.spr);
+        }
         setProps(this.sc.style, {
             visibility: 'visible'
         });
@@ -656,7 +661,7 @@ export default class Scripts {
                 break;
             case 'playsnd':
                 var snd = this.spr.sounds.indexOf(list[i][1]);
-                if (snd < 0) {
+                if (snd < 0 && !SoundLibrary.has(list[i][1])) {
                     list[i][0] = 'playsnd';
                     list[i][1] = this.spr.sounds[0];
                 }

@@ -48,21 +48,21 @@ module.exports = {
 		icon: iconFile
 	},
 	electronWinstallerConfig: {
-		"name": "ScratchJr",
+		"name": "J-GET-Junior",
 		loadingGif: installerGifWindows,
 	    iconUrl: iconFileWindows,
-	    exe: 'ScratchJr.exe',
+	    exe: 'J-GET-Junior.exe',
 	    setupIcon: iconFileWindows
 	},
 	electronInstallerDebian: {},
 	electronInstallerRedhat: {},
 	github_repository: {
-		"owner": "jfo8000",
-		"name": "ScratchJr-Desktop"
+		"owner": "user116RUS",
+		"name": "J-GET-Junior"
 	},
 	windowsStoreConfig: {
 		"packageName": "",
-		"name": "ScratchJr"
+		"name": "J-GET-Junior"
 	}
 
 }

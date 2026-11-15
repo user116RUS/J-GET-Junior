@@ -84,3 +84,8 @@ video::-webkit-media-controls-fullscreen-button {
 .nexticon.hide {display: none;}
 
 .nexticon:active {background: url('../assets/start/nextOn.svg');}
+.junior-guide { box-sizing: border-box; max-width: 900px; margin: 44px auto; padding: 32px 48px; background: #fff; color: #18384b; border-radius: 22px; font: 20px/1.5 Arial, sans-serif; }
+.junior-guide h1 { font-size: 30px; margin: 22px 0; }
+.junior-guide li { padding: 7px 0 7px 8px; }
+.junior-guide p { padding-top: 14px; border-top: 1px solid #dce7ec; }
+.tutorial { overflow-y: auto; }

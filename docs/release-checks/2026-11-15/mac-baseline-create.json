@@ -1,0 +1,119 @@
+{
+  "phase": "create",
+  "versions": {
+    "http_parser": "2.7.0",
+    "node": "8.2.1",
+    "v8": "5.9.211.38",
+    "uv": "1.13.1",
+    "zlib": "1.2.11",
+    "ares": "1.10.1-DEV",
+    "modules": "57",
+    "openssl": "1.0.2l",
+    "electron": "1.8.2-beta.3",
+    "chrome": "59.0.3071.115",
+    "atom-shell": "1.8.2-beta.3"
+  },
+  "arch": "x64",
+  "checks": [
+    "editor opened with sprite",
+    "native ArrowRight trigger starts",
+    "native keyboard script moves sprite",
+    "target collision detected natively",
+    "distant target does not collide",
+    "paint editor records a drawing change",
+    "paint editor saved new SVG costume",
+    "all 43 sounds decode in native Electron",
+    "native cat audio playing and ended"
+  ],
+  "keyboard": {
+    "before": 240,
+    "after": 264,
+    "interval": 8,
+    "threads": []
+  },
+  "expected": {
+    "shown": true,
+    "type": "sprite",
+    "md5": "03f8965a35e9060643a41f44bd57ed20.svg",
+    "id": "Tic 1",
+    "flip": false,
+    "name": "Tic",
+    "angle": 0,
+    "scale": 0.5,
+    "speed": 2,
+    "defaultScale": 0.5,
+    "sounds": [
+      "pop.mp3"
+    ],
+    "xcoor": 264,
+    "ycoor": 180,
+    "cx": 140,
+    "cy": 154,
+    "w": 281,
+    "h": 308,
+    "homex": 240,
+    "homey": 180,
+    "homescale": 0.5,
+    "homeshown": true,
+    "homeflip": false,
+    "scripts": [
+      [
+        [
+          "onkey",
+          "ArrowRight",
+          40,
+          40
+        ],
+        [
+          "forward",
+          1,
+          113,
+          40
+        ]
+      ],
+      [
+        [
+          "onkey",
+          "я",
+          40,
+          140
+        ],
+        [
+          "up",
+          1,
+          113,
+          140
+        ]
+      ],
+      [
+        [
+          "ontouchsprite",
+          "QA Target 1",
+          40,
+          240
+        ],
+        [
+          "forward",
+          1,
+          113,
+          240
+        ]
+      ],
+      [
+        [
+          "onflag",
+          "null",
+          330,
+          40
+        ],
+        [
+          "playsnd",
+          "library/cat.wav",
+          403,
+          40
+        ]
+      ]
+    ]
+  },
+  "readyForClose": true
+}

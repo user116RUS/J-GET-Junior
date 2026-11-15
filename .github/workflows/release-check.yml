@@ -1,0 +1,38 @@
+name: Verify Windows release
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Draft release tag containing J-GET-Junior-Setup.exe
+        required: true
+        default: v1.3.2-jget.1
+permissions:
+  contents: write # GitHub requires push access to retrieve draft releases.
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download draft installer
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern J-GET-Junior-Setup.exe --dir artifacts
+          if ($LASTEXITCODE -ne 0) { throw 'Installer download failed' }
+          Get-FileHash artifacts/J-GET-Junior-Setup.exe -Algorithm SHA256 | Format-List
+      - name: Install, exercise native application and uninstall
+        run: ./test/native/windows-release.ps1
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-check
+          path: artifacts/evidence/

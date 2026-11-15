@@ -143,7 +143,7 @@ export default class Stage {
             if (!sc) {
                 continue;
             }
-            var topblocks = sc.owner.getBlocksType(['onflag', 'ontouch']);
+            var topblocks = sc.owner.getBlocksType(['onflag', 'ontouch', 'ontouchsprite']);
             for (var j = 0; j < topblocks.length; j++) {
                 var b = topblocks[j];
                 ScratchJr.runtime.addRunScript(spr, b);
@@ -543,7 +543,7 @@ export default class Stage {
             this.moveElementBy(spr);
             if (spr.type == 'sprite') {
                 ScratchJr.runtime.threadsRunning = ScratchJr.runtime.threadsRunning.concat(spr.threads);
-                ScratchJr.startCurrentPageStrips(['ontouch']);
+                ScratchJr.startCurrentPageStrips(['ontouch', 'ontouchsprite']);
             }
         }
         Events.clearEvents();
@@ -564,7 +564,7 @@ export default class Stage {
         e.preventDefault();
         ScratchJr.clearSelection();
         ScratchJr.startScriptsFor(spr, ['onclick']);
-        ScratchJr.startCurrentPageStrips(['ontouch']);
+        ScratchJr.startCurrentPageStrips(['ontouch', 'ontouchsprite']);
     }
 
 

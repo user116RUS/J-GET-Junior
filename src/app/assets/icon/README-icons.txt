@@ -1,18 +1,7 @@
-These are the mac terminal commands for making an icon from a 1024px png 
+J-GET Junior icons
 
-
-mkdir MyIcon.iconset
-sips -z 16 16     Icon1024.png --out MyIcon.iconset/icon_16x16.png
-sips -z 32 32     Icon1024.png --out MyIcon.iconset/icon_16x16@2x.png
-sips -z 32 32     Icon1024.png --out MyIcon.iconset/icon_32x32.png
-sips -z 64 64     Icon1024.png --out MyIcon.iconset/icon_32x32@2x.png
-sips -z 128 128   Icon1024.png --out MyIcon.iconset/icon_128x128.png
-sips -z 256 256   Icon1024.png --out MyIcon.iconset/icon_128x128@2x.png
-sips -z 256 256   Icon1024.png --out MyIcon.iconset/icon_256x256.png
-sips -z 512 512   Icon1024.png --out MyIcon.iconset/icon_256x256@2x.png
-sips -z 512 512   Icon1024.png --out MyIcon.iconset/icon_512x512.png
-cp Icon1024.png MyIcon.iconset/icon_512x512@2x.png
-iconutil -c icns MyIcon.iconset
-rm -R MyIcon.iconset
-
-Used https://cloudconvert.com/png-to-ico to make the ico file.
+Original artwork: jget-junior.svg (geometric J mark, blue tile and amber dot).
+Raster/icon outputs: Icon1024.png, icon.png, icon.ico, icon.icns and MyIcon.iconset/.
+The platform copies are in src/icons/png, src/icons/mac and src/icons/win.
+Existing filenames are retained for compatibility with the desktop packager.
+No upstream mascot or logo artwork is included in these files.

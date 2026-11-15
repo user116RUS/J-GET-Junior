@@ -1,0 +1,2 @@
+# Build-only PE resource editor; never bundled with the application.
+lief==1.0.0

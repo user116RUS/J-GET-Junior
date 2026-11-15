@@ -1,0 +1,76 @@
+ScratchJr Classroom — дополнительная библиотека звуков
+Подготовлено 15 ноября 2026 года.
+
+Источник: стандартная библиотека звуков Scratch.
+Scratch is developed by the Lifelong Kindergarten Group at the MIT Media Lab. See https://scratch.mit.edu.
+Scratch is developed by the Scratch Foundation and its partners and affiliates. See https://scratchfoundation.org.
+
+Звуки и их обработанные версии распространяются по Creative Commons Attribution-ShareAlike 2.0 (CC BY-SA 2.0):
+https://creativecommons.org/licenses/by-sa/2.0/
+Полный текст лицензии: https://creativecommons.org/licenses/by-sa/2.0/legalcode
+При распространении звуков сохраняйте указание источника, ссылку на лицензию и описание изменений. Изменённые версии звуков распространяйте на условиях совместимой лицензии ShareAlike. Лицензия аудиофайлов не заменяет лицензию программного кода приложения.
+
+Основание: раздел 5.2 опубликованных Scratch Terms of Use в официальном репозитории scratch-www:
+https://github.com/scratchfoundation/scratch-www/blob/93fefda5bb67774de2ef31a8139cd4517aebd6d7/src/views/terms/terms.jsx#L251-L266
+Официальная справка о повторном использовании материалов:
+https://mitscratch.freshdesk.com/en/support/solutions/articles/4000156892-may-i-use-remix-scratch-support-materials-sprites-images-sounds-or-sample-projects-i-ve-found-on
+
+Каталог оригиналов, названия и идентификаторы:
+https://github.com/scratchfoundation/scratch-gui/blob/dae2a97a5bb0cd8a7513fafd60f9e7488f2a89a4/src/lib/libraries/sounds.json
+Исходные файлы получены с https://assets.scratch.mit.edu/internalapi/asset/{md5ext}/get/
+MD5 каждого скачанного оригинала совпал с assetId официального каталога.
+Точные адреса оригиналов, исходная/конечная длительность, коэффициент громкости и SHA-256 файлов приведены в provenance.json рядом с этим файлом.
+
+Обработка для ScratchJr Classroom: преобразование в PCM WAV, 16 бит, моно, 22050 Гц; выравнивание пиков до 75% шкалы, короткое плавное начало (3 мс) и окончание (до 15 мс). Для Rain, Thunder Storm, Jungle Frogs, Tropical Birds и Xylo1 взяты первые 6 секунд с плавным окончанием 120 мс. У оригинала Rooster декодирован полный звуковой поток без лишнего нечётного байта в конце PCM-данных. Русские названия и группировка добавлены для этого приложения. Все 43 готовых WAV полностью декодируются без ошибок.
+
+Общие благодарности авторам из официальной страницы Scratch Credits (не соответствие «один автор — один файл»):
+Nina Paley; Kellee Maize; Peter Rudenko; Chris Zabriskie; Kevin MacLeod;
+acclivity; belloisec; Benboncan; Calcuttan; coby12388; copyc4t; cs272; Flick3r; FreqMan; gelo_papas; han1; InspectorJ; jiserte; junggle; juskiddink; klankbeeld; LittleRobotSoundFactory; LloydEvans09; lonemonk; rhodesmas; sandyrb; themfish; tyops.
+Ресурсы, указанные Scratch: Adobe.com, Archive.org, FreeMusicArchive.org, FreeSound.org, Incompetech.com.
+https://scratch.mit.edu/credits/
+https://github.com/scratchfoundation/scratch-www/blob/93fefda5bb67774de2ef31a8139cd4517aebd6d7/src/views/credits/credits.jsx
+
+Файлы: новое имя — исходное название — исходный идентификатор
+cat.wav — Meow — 83c36d806dc92327b9e7049a565c6bff.wav
+dog.wav — Dog1 — b15adefc3c12f758b6dc6a045362532f.wav
+duck.wav — Duck — af5b039e1b05e0ccb12944f648a8884e.wav
+cow.wav — Moo — 7206280bd4444a06d25f19a84dcb56b1.wav
+horse.wav — Horse — 45ffcf97ee2edca0199ff5aa71a5b72e.wav
+owl.wav — Owl — e8b6d605f5a1bb36c29e4e21ef754209.wav
+bird.wav — Bird — 18bd4b634a3f992a16b30344c7d810e0.wav
+sheep.wav — Baa — ca694053020e42704bcf1fc01a70f1c3.wav
+rooster.wav — Rooster — 2e375acae2c7c0d655935a9de14b12f6.wav
+goose.wav — Goose — 16a3b9d516e125cdb2ad74cd8d205d71.wav
+frog.wav — Croak — c6ce0aadb89903a43f76fc20ea57633e.wav
+wolf.wav — Wolf Howl — 5e36d74bb16aa5085b901362788b0fbf.wav
+seagulls.wav — Seagulls — 42bbbb6c37439abc82057ec2e67b78dc.wav
+monkey.wav — Chee Chee — 25f4826cdd61e0a1c623ec2324c16ca0.wav
+guinea-pig.wav — Squeaks — 62244fb9600ee90c780875deba2ba24f.wav
+rain.wav — Rain — b5db20c28ef4946137129b47772dcf69.wav
+wave.wav — Ocean Wave — c904610d770398b98872a708a2f75611.wav
+drop.wav — Water Drop — e133e625fd367d269e76964d4b722fc2.wav
+crickets.wav — Crickets — cae6206eb3c57bb8c4b3e2ca362dfa6d.wav
+thunder.wav — Thunder Storm — 11f13be7e53b2e9116d59344c5efc66a.wav
+jungle-frogs.wav — Jungle Frogs — 2ca5fbda5288b79a6e12f5ca3c20b0fa.wav
+tropical-birds.wav — Tropical Birds — 18e5a88512296cd96417449496bd8711.wav
+splash.wav — Splash — 6aed5e38d40b87a21d893d26fa2858c0.wav
+ripples.wav — Ripples — d3c95a4ba37dcf90c8a57e8b2fd1632d.wav
+piano.wav — C Piano — d27ed8d953fe8f03c00f4d733d31d2cc.wav
+guitar.wav — C Guitar — 22baa07795a9a524614075cdea543793.wav
+xylophone.wav — Xylo1 — 6ac484e97c1c1fe1384642e26a125e70.wav
+drums.wav — Drum — f730246174873cd4ae4127c83e475b50.wav
+space-dance.wav — Dance Space — e15333f5ffaf08e145ace1610fccd67d.wav
+chords.wav — Guitar Chords1 — 2b1a5bc63580d8625cf24ff3d7622c0b.wav
+jump.wav — Jump — 6fcd64d6357e4ea03704e5f96bfd35ba.wav
+coin.wav — Coin — 1f81d88fb419084f4d82ffb859b94ed6.wav
+magic.wav — Magic Spell — 1cb60ecdb1075c8769cb346d5c2a22c7.wav
+win.wav — Win — db480f6d5ae6d494dbb76ffb9bd995d5.wav
+boing.wav — Boing — 53a3c2e27d1fb5fdb14aaf0cb41e7889.wav
+clapping.wav — Clapping — 684ffae7bc3a65e35e9f0aaf7a579dd5.wav
+bubbles.wav — Bubbles — 78b0be9c9c2f664158b886bc7e794095.wav
+tada.wav — Tada — 10eed5b6b49ec7baf1d4b3b3fad0ac99.wav
+horn.wav — Car Horn — 7c887f6a2ecd1cdb85d5527898d7f7a0.wav
+car.wav — Car Vroom — ead1da4a87ff6cb53441142f7ac37b8f.wav
+train.wav — Train Whistle — 50f29d0e028ec5c11210d0e2f91f83dd.wav
+doorbell.wav — Doorbell — b67db6ed07f882e52a9ef4dbb76f5f64.wav
+phone.wav — Telephone Ring — 276f97d3a9d0f9938b37db8225af97f5.wav

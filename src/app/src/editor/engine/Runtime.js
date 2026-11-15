@@ -1,7 +1,7 @@
 import ScratchJr from '../ScratchJr';
-import Project from '../ui/Project';
 import Prims from './Prims';
 import Thread from './Thread';
+import KeyboardKeys from '../../utils/KeyboardKeys';
 
 export default class Runtime {
     constructor () {
@@ -19,7 +19,6 @@ export default class Runtime {
         this.intervalId = window.setInterval(function () {
             rt.tickTask();
         }, 32);
-        Project.saving = false;
         // Prims.time = (new Date() - 0);
         this.threadsRunning = [];
     }
@@ -51,11 +50,11 @@ export default class Runtime {
             if (!t) {
                 continue;
             }
-            if (t.isRunning && (t.firstBlock.blocktype != 'ontouch')) {
+            var touchTrigger = t.firstBlock.blocktype == 'ontouch' || t.firstBlock.blocktype == 'ontouchsprite';
+            if (t.isRunning && !touchTrigger) {
                 inactive = false;
             }
-            if ((t.firstBlock.blocktype == 'ontouch') && (t.thisblock != null)
-                && (t.thisblock.blocktype != 'ontouch')) {
+            if (touchTrigger && (t.thisblock != null) && (t.thisblock != t.firstBlock)) {
                 inactive = false;
             }
         }
@@ -88,6 +87,23 @@ export default class Runtime {
 
     addRunScript (spr, b) {
         this.restartThread(spr, b);
+    }
+
+    startKeyScripts (key) {
+        let matched = false;
+        Prims.applyToAllStrips(['onkey'], (block, sprite) => {
+            if (KeyboardKeys.normalize(block.getArgValue()) !== key) return;
+            matched = true;
+            const running = this.threadsRunning.some(thread =>
+                thread.spr === sprite && thread.firstBlock === block && thread.isRunning);
+            if (running) return;
+            // A key can arrive after Done and before tickTask removes the old
+            // thread. Remove that completed entry before the normal launch.
+            this.threadsRunning = this.threadsRunning.filter(thread =>
+                thread.spr !== sprite || thread.firstBlock !== block);
+            this.addRunScript(sprite, block);
+        });
+        return matched;
     }
 
     stopThreads () {
@@ -170,7 +186,8 @@ export default class Runtime {
         for (var i = 0; i < this.threadsRunning.length; i++) {
             if (this.threadsRunning[i].firstBlock == b) {
                 wasRunning = true;
-                if (b.blocktype != 'ontouch') { // on touch demons are special - they are not interruptable
+                // Collision watchers must not interrupt an already running response.
+                if (b.blocktype != 'ontouch' && b.blocktype != 'ontouchsprite') {
                     if (this.threadsRunning[i].oldblock != null) {
                         this.threadsRunning[i].oldblock.unhighlight();
                     }

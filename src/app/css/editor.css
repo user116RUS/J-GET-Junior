@@ -766,6 +766,166 @@ form.projectname {
 
 /* Programming */
 
+.spritearg {
+    position: absolute;
+    left: 6px;
+    top: 53px;
+    box-sizing: border-box;
+    width: 74px;
+    height: 30px;
+    padding: 1px 3px;
+    border: 2px solid #bf9f20;
+    border-radius: 7px;
+    background: #fff9dc;
+    color: #68521a;
+    display: flex;
+    align-items: center;
+    font: bold 10px/12px Verdana, sans-serif;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.spritearg-icon { width: 22px; height: 22px; flex-shrink: 0; }
+.spritearg-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.spritearg-arrow { margin-left: 2px; font-size: 12px; }
+.spritearg-inpalette { height: 22px; }
+.spritearg-inpalette .spritearg-icon { display: none; }
+.spritearg[data-unresolved="true"] { border-color: #af642a; }
+
+.menustyle.yellow.sprite-menu {
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 12px;
+    background: #fff6c7;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.24);
+    pointer-events: all;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+}
+
+.sprite-menu-title { padding: 0 24px 9px 0; color: #68521a; font: bold 14px/22px Verdana, sans-serif; }
+.sprite-menu-list { display: flex; flex-wrap: wrap; overflow-y: auto; min-height: 0; }
+.sprite-menu-choice {
+    box-sizing: border-box;
+    width: calc(100% / 3 - 6px);
+    height: 86px;
+    margin: 3px;
+    padding: 4px;
+    border: 2px solid #d3b64c;
+    border-radius: 8px;
+    background: white;
+    color: #584619;
+    cursor: pointer;
+}
+.sprite-menu-icon { display: block; width: 48px; height: 48px; margin: 0 auto 4px; }
+.sprite-menu-name { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: bold 11px/16px Verdana, sans-serif; }
+.sprite-menu-choice[aria-pressed="true"] { background: #f9d94a; border-color: #9b7e0f; }
+.sprite-menu-empty { padding: 8px; color: #68521a; font: 14px/22px Verdana, sans-serif; }
+.spritearg:focus, .sprite-menu-choice:focus { outline: 2px solid #227bc2; outline-offset: 1px; }
+
+.keyarg {
+    position: absolute;
+    left: 20px;
+    top: 54px;
+    width: 49px;
+    height: 27px;
+    padding: 0 4px;
+    border: 2px solid #bf9f20;
+    border-radius: 7px;
+    background: #fff9dc;
+    color: #68521a;
+    font: bold 21px/22px Verdana, sans-serif;
+    text-align: center;
+    cursor: pointer;
+    pointer-events: all;
+}
+
+.keyarg-arrow {
+    margin-left: 5px;
+    font-size: 13px;
+    vertical-align: 2px;
+}
+
+.keyarg-inpalette {
+    height: 20px;
+    font-size: 17px;
+    line-height: 16px;
+}
+
+.menustyle.yellow.keyboard-menu {
+    box-sizing: border-box;
+    padding: 12px;
+    border-radius: 12px;
+    background: #fff6c7;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.24);
+    pointer-events: all;
+}
+
+.keyboard-menu-title {
+    height: 29px;
+    color: #68521a;
+    font: bold 16px/22px Verdana, sans-serif;
+}
+
+.keyboard-menu-close {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #68521a;
+    font: 26px/30px Verdana, sans-serif;
+    cursor: pointer;
+}
+
+.keyboard-menu-arrows {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.keyboard-menu-letters {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keyboard-menu-key {
+    box-sizing: border-box;
+    width: calc(100% / 9 - 4px);
+    height: 38px;
+    margin: 2px;
+    padding: 0;
+    border: 2px solid #d3b64c;
+    border-radius: 6px;
+    background: white;
+    color: #584619;
+    font: bold 21px/32px Verdana, sans-serif;
+    cursor: pointer;
+}
+
+.keyboard-menu-arrows .keyboard-menu-key {
+    width: 48px;
+    height: 40px;
+    font-size: 28px;
+}
+
+.keyboard-menu-key[aria-pressed="true"],
+.keyboard-menu-key:active {
+    background: #f9d94a;
+    border-color: #9b7e0f;
+}
+
+.keyarg:focus,
+.keyboard-menu-key:focus,
+.keyboard-menu-close:focus {
+    outline: 2px solid #227bc2;
+    outline-offset: 1px;
+}
+
 *.menustyle {
   -webkit-border-radius: 12px;
   border-radius: 12px;
@@ -1115,3 +1275,49 @@ p.textsprite {
     width: auto;
     -webkit-text-size-adjust: auto;
 }
+
+/* Built-in sounds retain stable filenames; the picker shows child-friendly names. */
+.soundarg {
+    position: absolute; left: 4px; top: 44px; width: 61px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 3px; border: 1px solid #337b36; border-radius: 7px;
+    background: #f4fff2; color: #245c28; cursor: pointer;
+    font: bold 11px Arial, sans-serif; pointer-events: auto;
+}
+.soundarg-value { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.soundarg-arrow { margin-left: 2px; }
+.sound-menu {
+    box-sizing: border-box; display: flex; flex-direction: column;
+    padding: 20px; border: 3px solid #378845; border-radius: 18px;
+    background: #f7fff5; color: #24462c; box-shadow: 0 8px 36px rgba(0,0,0,.3);
+    font: 16px Arial, sans-serif;
+}
+.sound-menu-title { font-size: 23px; font-weight: bold; padding-right: 35px; }
+.sound-menu-close {
+    position: absolute; top: 10px; right: 12px; width: 34px; height: 34px;
+    border: 0; border-radius: 50%; background: #dfefdc; color: #24462c;
+    font-size: 27px; cursor: pointer;
+}
+.sound-menu-hint { margin: 10px 0 14px; font-size: 14px; line-height: 1.4; }
+.sound-menu-tabs { display: flex; flex-wrap: wrap; margin-bottom: 12px; flex-shrink: 0; }
+.sound-menu-tab {
+    margin: 0 6px 6px 0; padding: 9px 11px; background: white;
+    color: #245c28; border: 1px solid #a4cba6; border-radius: 10px;
+    font: bold 14px Arial, sans-serif; cursor: pointer;
+}
+.sound-menu-tab[aria-pressed="true"] { background: #378845; color: white; border-color: #378845; }
+.sound-menu-list { display: flex; flex-wrap: wrap; overflow-y: auto; align-content: flex-start; min-height: 0; flex: 1; }
+.sound-menu-row { display: flex; width: calc(50% - 10px); margin: 0 10px 10px 0; min-height: 48px; }
+.sound-menu-choice {
+    min-width: 0; flex: 1; padding: 10px; text-align: left; background: white;
+    border: 1px solid #b5d5b5; border-radius: 10px 0 0 10px;
+    color: #24462c; font: bold 15px Arial, sans-serif; cursor: pointer;
+}
+.sound-menu-choice[aria-pressed="true"] { background: #d6f2cb; border-color: #378845; }
+.sound-menu-preview {
+    width: 43px; flex-shrink: 0; padding: 0; border: 1px solid #b5d5b5; border-left: 0;
+    border-radius: 0 10px 10px 0; color: #245c28; background: #e8f5e3;
+    font-size: 18px; cursor: pointer;
+}
+.sound-menu button:focus, .soundarg:focus { outline: 2px solid #1678b0; outline-offset: 1px; }
+.sound-menu-status { min-height: 18px; font-size: 13px; margin-top: 4px; color: #99401e; }

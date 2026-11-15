@@ -16,6 +16,7 @@ import ScriptsPane from './ui/ScriptsPane';
 import Events from '../utils/Events';
 import BlockSpecs from './blocks/BlockSpecs';
 import Runtime from './engine/Runtime';
+import Keyboard from './engine/Keyboard';
 import Localization from '../utils/Localization';
 import {libInit, gn, scaleMultiplier, newHTML,
     isAndroid, isTablet, getUrlVars, CSSTransition3D, frame} from '../utils/lib';
@@ -205,6 +206,7 @@ export default class ScratchJr {
         ScratchJr.editorEvents();
         Project.load(currentProject);
         Events.init();
+        Keyboard.start();
         if (window.Settings.autoSaveInterval > 0) {
             autoSaveSetInterval = window.setInterval(function () {
                 if (autoSaveEnabled && !onHold && !Project.saving && !UI.infoBoxOpen) {
@@ -319,6 +321,7 @@ export default class ScratchJr {
     // opportunity to save progress, etc. before the app is
     // paused, and so we just suspend the whole webview and then restore it here.
     static onResume () {
+        Keyboard.start();
         // no nothing special, for now.
         if (Record.dialogOpen) {
             Record.recordError();
@@ -336,8 +339,29 @@ export default class ScratchJr {
     }
 
     static onPause () {
+        Keyboard.stop();
         autoSaveEnabled = false;
         window.clearInterval(autoSaveSetInterval);
+    }
+
+    static saveBeforeClose (discardDrawing, done, started = Date.now()) {
+        // The check mark may still be loading a new sprite onto the stage.
+        if (Paint.saving || onHold || Project.saving) {
+            if (Date.now() - started < 5000) {
+                setTimeout(() => ScratchJr.saveBeforeClose(discardDrawing, done, started), 50);
+            } else {
+                done('busy');
+            }
+            return;
+        }
+        if (!discardDrawing && gn('paintframe').classList.contains('appear')) {
+            done('paint');
+            return;
+        }
+        ScratchJr.unfocus();
+        ScratchJr.stopStrips();
+        if (editmode === 'edit') changed = true;
+        ScratchJr.saveProject(null, () => done('saved'));
     }
 
     static saveProject (e, onDone) {
@@ -364,7 +388,7 @@ export default class ScratchJr {
                     Project.prepareToSave(currentProject, onDone);
                 });
             }, true);
-        } else if (ScratchJr.isEditable() && currentProject && !Project.error && changed) {
+        } else if (ScratchJr.isEditable() && currentProject && !Project.error && (changed || Project.saving)) {
             Project.prepareToSave(currentProject, onDone);
         } else {
             if (onDone) {
@@ -445,7 +469,7 @@ export default class ScratchJr {
 
     static startGreenFlagThreads () {
         ScratchJr.resetSprites();
-        ScratchJr.startCurrentPageStrips(['onflag', 'ontouch']);
+        ScratchJr.startCurrentPageStrips(['onflag', 'ontouch', 'ontouchsprite']);
     }
 
     static startCurrentPageStrips (list) {
