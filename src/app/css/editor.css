@@ -853,6 +853,17 @@ form.projectname {
     line-height: 16px;
 }
 
+.keyarg[data-key="Space"] {
+    left: 12px;
+    width: 65px;
+    font-size: 11px;
+}
+
+.keyarg[data-key="Space"] .keyarg-arrow {
+    margin-left: 2px;
+    vertical-align: 0;
+}
+
 .menustyle.yellow.keyboard-menu {
     box-sizing: border-box;
     padding: 12px;
@@ -911,6 +922,11 @@ form.projectname {
     width: 48px;
     height: 40px;
     font-size: 28px;
+}
+
+.keyboard-menu-arrows .keyboard-menu-space {
+    width: 110px;
+    font-size: 16px;
 }
 
 .keyboard-menu-key[aria-pressed="true"],
@@ -1321,3 +1337,19 @@ p.textsprite {
 }
 .sound-menu button:focus, .soundarg:focus { outline: 2px solid #1678b0; outline-offset: 1px; }
 .sound-menu-status { min-height: 18px; font-size: 13px; margin-top: 4px; color: #99401e; }
+
+/* Project sound collection controls stay alongside the five visible blocks. */
+.sound-palette-button {
+    position: absolute;
+    top: ${8 * scaleMultiplier}px;
+    height: ${43 * scaleMultiplier}px;
+    padding: 0;
+    border: ${2 * scaleMultiplier}px solid #26834e;
+    border-radius: ${9 * scaleMultiplier}px;
+    background: #e5f8e8;
+    color: #165d35;
+    font: bold ${14 * scaleMultiplier}px Arial, sans-serif;
+    cursor: pointer;
+}
+.sound-palette-button:disabled { opacity: 0.35; cursor: default; }
+.sound-palette-button:focus { outline: 2px solid #1678b0; outline-offset: 1px; }

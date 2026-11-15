@@ -30,15 +30,24 @@ def build(args):
     info_file = args.output / 'Contents/Info.plist'
     info = plistlib.loads(info_file.read_bytes())
     source = Path(__file__).resolve().parent.parent
-    version = json.loads((source / 'package.json').read_text())['version']
+    manifest = json.loads((source / 'package.json').read_text())
+    version = manifest['version']
+    product_name = manifest['productName']
+    legacy_names = (base_info['CFBundleExecutable'], 'J-GET Junior', 'ScratchJr')
+
+    def rename_product(value):
+        for old_name in legacy_names:
+            value = value.replace(old_name, product_name)
+        return value
     match = re.fullmatch(r'(\d+)\.(\d+)\.(\d+)-jget\.(\d+)', version)
     if not match:
-        raise ValueError('Unexpected J-GET Junior version')
+        raise ValueError('Unexpected ScratchJGET version')
     file_version = '.'.join(match.groups()[:3]) + '.' + str(4 + int(match.group(4)))
     executable = args.output / 'Contents/MacOS' / info['CFBundleExecutable']
-    executable.rename(executable.with_name('J-GET Junior'))
-    info.update({'CFBundleName': 'J-GET Junior', 'CFBundleDisplayName': 'J-GET Junior',
-                 'CFBundleExecutable': 'J-GET Junior', 'CFBundleIdentifier': 'it.jget.junior',
+    if executable.name != product_name:
+        executable.rename(executable.with_name(product_name))
+    info.update({'CFBundleName': product_name, 'CFBundleDisplayName': product_name,
+                 'CFBundleExecutable': product_name, 'CFBundleIdentifier': 'it.jget.junior',
                  'CFBundleShortVersionString': '.'.join(match.groups()[:3]),
                  'CFBundleVersion': file_version})
     icon = info.get('CFBundleIconFile', 'electron.icns')
@@ -49,21 +58,21 @@ def build(args):
     for helper_info in list((args.output / 'Contents/Frameworks').glob('*.app/Contents/Info.plist')):
         helper = plistlib.loads(helper_info.read_bytes())
         display = helper.get('CFBundleDisplayName', helper.get('CFBundleName', 'Helper'))
-        display = display.replace('ScratchJr', 'J-GET Junior')
+        display = rename_product(display)
         helper.update({'CFBundleDisplayName': display, 'CFBundleName': display})
         if 'CFBundleIdentifier' in helper:
             helper['CFBundleIdentifier'] = helper['CFBundleIdentifier'].replace('com.electron.scratchjr', 'it.jget.junior')
         # Chromium derives the helper bundle name from the main application
         # name. Keep bundle, executable and metadata consistent after rename.
         old_executable = helper['CFBundleExecutable']
-        new_executable = old_executable.replace('ScratchJr', 'J-GET Junior')
+        new_executable = rename_product(old_executable)
         if new_executable != old_executable:
             (helper_info.parent / 'MacOS' / old_executable).rename(
                 helper_info.parent / 'MacOS' / new_executable)
         helper['CFBundleExecutable'] = new_executable
         helper_info.write_bytes(plistlib.dumps(helper))
         helper_bundle = helper_info.parent.parent
-        new_bundle_name = helper_bundle.name.replace('ScratchJr', 'J-GET Junior')
+        new_bundle_name = rename_product(helper_bundle.name)
         if helper_bundle.name != new_bundle_name:
             helper_bundle.rename(helper_bundle.with_name(new_bundle_name))
     print('Built Intel app: ' + str(args.output))

@@ -8,6 +8,7 @@ import Project from './Project';
 import Palette from './Palette';
 import UI from './UI';
 import ScratchAudio from '../../utils/ScratchAudio';
+import SoundLibrary from '../../utils/SoundLibrary';
 import {newHTML, isTablet, gn} from '../../utils/lib';
 
 let buffer = [];
@@ -115,11 +116,14 @@ export default class Undo {
 
     static smartRecreate (cmd, elem, data) {
         ScratchJr.stopStrips();
+        ScratchJr.stage.librarySounds = SoundLibrary.fromProject(data);
         var action = elem.action;
         var page = elem.where;
         var spr = elem.who;
         //  console.log (action, page, spr);
         switch (action) {
+        case 'librarysound':
+            break;
         case 'pageorder':
             ScratchJr.stage.pages = Undo.getPageOrder(data);
             Undo.recreateAllScripts(data);
@@ -192,6 +196,7 @@ export default class Undo {
             Undo.recreate(buffer[index]);
             break;
         }
+        if (Palette.numcat == 3) Palette.selectCategory(3);
         Undo.update();
     }
 
@@ -347,6 +352,7 @@ export default class Undo {
     static recreate (data) {
         Project.mediaCount = 0;
         ScratchJr.stage.pages = [];
+        ScratchJr.stage.librarySounds = SoundLibrary.fromProject(data);
         var pages = data.pages;
         if (data.projectsounds) {
             ScratchAudio.projectsounds = data.projectsounds;

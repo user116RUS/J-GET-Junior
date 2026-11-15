@@ -104,11 +104,9 @@ export default class Library {
     }
 
     static cancelPick (e) {
-        ScratchJr.onHold = true;
+        // close() consumes this mouse event and clears the release handler.
+        // The editor is ready now; a timed lock here swallowed the next click.
         Library.close(e);
-        setTimeout(function () {
-            ScratchJr.onHold = false;
-        }, 1000);
     }
 
     static addThumbnails () {

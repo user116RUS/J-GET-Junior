@@ -1,4 +1,4 @@
-J-GET Junior icons
+ScratchJGET icons
 
 Original artwork: jget-junior.svg (geometric J mark, blue tile and amber dot).
 Raster/icon outputs: Icon1024.png, icon.png, icon.ico, icon.icns and MyIcon.iconset/.

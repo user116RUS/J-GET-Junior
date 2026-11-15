@@ -98,7 +98,7 @@ fs.readdirSync(cache).forEach(dir => {
 });
 // Copy the project notices and installation guide without shipping QA reports.
 ['README.md', 'LICENSE', 'TRADEMARKS', 'THIRD_PARTY_NOTICES.md', 'docs/Windows-класс.txt',
-    'docs/Mac-установка.txt', 'docs/JGET-RELEASE.md', 'docs/SOUND-ASSETS.md'].forEach(rel => {
+    'docs/Mac-установка.txt', 'docs/JGET-RELEASE.md', 'docs/SOUND-ASSETS.md', 'docs/CHARACTER-RESTORATION.md', 'docs/PROJECT-SOUNDS.md', 'docs/RELEASE-NOTES-1.3.2-jget.3.md'].forEach(rel => {
     if (!fs.existsSync(path.join(root, rel))) return;
     const dest = path.join(app, rel);
     fs.mkdirSync(path.dirname(dest), {recursive: true});

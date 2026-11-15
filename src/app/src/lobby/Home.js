@@ -253,12 +253,12 @@ export default class Home {
         for (var i = 0; i < data.length; i++) {
             Home.addProjectLink(div, data[i]);
         }
-        setTimeout(function () {
-            Lobby.busy = false;
-        }, 1000);
         if (gn('wrapc')) {
             gn('wrapc').scrollTop = scrollvalue;
         }
+        // All project links are installed. Allow navigation immediately rather
+        // than ignoring the first second of clicks after returning home.
+        Lobby.busy = false;
     }
 
     static addProjectLink (parent, aa) {

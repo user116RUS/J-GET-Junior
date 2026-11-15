@@ -2,6 +2,7 @@ import ScratchJr from '../ScratchJr';
 import BlockSpecs from './BlockSpecs';
 import Menu from './Menu';
 import Undo from '../ui/Undo';
+import Palette from '../ui/Palette';
 import {setCanvasSize, setProps, writeText, scaleMultiplier,
     newHTML, newDiv, newCanvas, getStringSize, isTablet,
     globalx, globaly} from '../../utils/lib';
@@ -105,6 +106,7 @@ export default class BlockArg {
         }
         if (this.argType == 'k') {
             this.keyLabel.textContent = KeyboardKeys.label(this.argValue);
+            this.div.setAttribute('data-key', this.argValue);
             this.div.setAttribute('aria-label', 'Нажата клавиша ' + this.keyLabel.textContent + '. Выбрать клавишу');
         }
         if (this.argType == 'r') {
@@ -338,6 +340,7 @@ export default class BlockArg {
         button.type = 'button';
         button.title = 'Нажата клавиша. Выбрать клавишу';
         button.setAttribute('aria-haspopup', 'dialog');
+        button.setAttribute('data-key', this.argValue);
         button.style.zoom = (this.daddy.scale * 100) + '%';
         this.keyLabel = newHTML('span', 'keyarg-value', button);
         this.keyLabel.textContent = KeyboardKeys.label(this.argValue);
@@ -641,15 +644,21 @@ export default class BlockArg {
     closeSoundMenu (e, mu, b, id) {
         e.preventDefault();
         e.stopPropagation();
+        if (!SoundLibrary.has(id)) return;
         const arg = b.owner.arg;
         const previous = arg.argValue;
-        arg.setValue(id);
+        const added = SoundLibrary.remember(ScratchJr.stage, id);
+        // A palette choice adds another reusable block; it must not replace
+        // the block the child opened the library from.
+        if (!b.owner.inpalette) arg.setValue(id);
         Menu.closeMyOpenMenu();
-        if (arg.argValue != previous && !b.owner.inpalette) {
-            const spr = b.parentNode.owner.spr;
-            Undo.record({action: 'scripts', where: spr.div.parentNode.owner.id, who: spr.id});
+        if (added || (arg.argValue != previous && !b.owner.inpalette)) {
+            const spr = b.owner.inpalette ? ScratchJr.getSprite() : b.parentNode.owner.spr;
+            Undo.record({action: b.owner.inpalette ? 'librarysound' : 'scripts',
+                where: spr.div.parentNode.owner.id, who: spr.id});
             ScratchJr.storyStart('BlockArg.prototype.closeSoundMenu');
         }
+        if (Palette.numcat == 3) Palette.showSound(id);
     }
 
 }

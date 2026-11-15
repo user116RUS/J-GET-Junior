@@ -50,7 +50,7 @@ def build(args, stage):
     unpack(args.setup, stage)
     subprocess.run(["node", Path(__file__).with_name("compile-portable.js"), stage / "resources/app"],
                    env={**os.environ, "NODE_PATH": str(args.compiler.resolve())}, check=True)
-    executable = stage / "J-GET-Junior.exe"
+    executable = stage / "ScratchJGET.exe"
     (stage / "ScratchJr.exe").rename(executable)
     # The old Squirrel launcher is unused by the per-user NSIS installation.
     (stage / "ScratchJr_ExecutionStub.exe").unlink(missing_ok=True)
@@ -62,7 +62,7 @@ def build(args, stage):
     with zipfile.ZipFile(args.output, "w", zipfile.ZIP_DEFLATED) as archive:
         for file in sorted(stage.rglob("*")):
             if file.is_file():
-                archive.write(file, Path("J-GET-Junior") / file.relative_to(stage))
+                archive.write(file, Path("ScratchJGET") / file.relative_to(stage))
 
 
 if __name__ == "__main__":

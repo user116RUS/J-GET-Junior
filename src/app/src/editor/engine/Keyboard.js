@@ -21,6 +21,7 @@ export default class Keyboard {
         }
         const key = event.key || '';
         if (/^Arrow(Up|Down|Left|Right)$/.test(key)) return key;
+        if (key === ' ' || key === 'Spacebar' || (!key && event.code === 'Space')) return 'Space';
         if (/^[а-яё]$/i.test(key)) return key.toLowerCase();
         // Printed Russian letters win over the physical mapping. With English
         // input selected, use the Russian label of the same physical key.

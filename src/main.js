@@ -77,7 +77,7 @@ function reportCrash(error) {
   } catch (logError) {
     // Early startup failures may occur before the library folder is available.
   }
-  dialog.showErrorBox('J-GET Junior', details);
+  dialog.showErrorBox('ScratchJGET', details);
 }
 function exitAfterError(error) {
   try { reportCrash(error); } finally { process.exit(1); }
@@ -113,7 +113,7 @@ function createWindow(openedDatabase) {
 
   win = new BrowserWindow(
     {
-      title: 'J-GET Junior',
+      title: 'ScratchJGET',
       width: 1020,
       height: 800,
       minHeight: 800,
@@ -123,7 +123,7 @@ function createWindow(openedDatabase) {
     });
 
   const view = new BrowserView({
-    title: 'J-GET Junior',
+    title: 'ScratchJGET',
     icon: `${__dirname}app/assets/icon/icon.png`,
     webPreferences: {
       nodeIntegration: false
@@ -196,7 +196,7 @@ function createWindow(openedDatabase) {
     }
   });
   win.webContents.on('crashed', () => {
-    reportCrash(new Error('J-GET Junior editor process stopped unexpectedly.'));
+    reportCrash(new Error('ScratchJGET editor process stopped unexpectedly.'));
     win.close();
   });
 
@@ -306,9 +306,9 @@ function showStorageError(error) {
   const details = String(error.message || error);
   const folder = projectLibrary ? projectLibrary.folder : '';
   const message = /^ru/i.test(app.getLocale())
-    ? 'Не удалось прочитать или записать библиотеку J-GET Junior. Проверьте место на диске и права доступа к папке.'
-    : 'J-GET Junior could not read or write the project library. Check free disk space and access to this folder.';
-  dialog.showErrorBox('J-GET Junior', message + '\n' + folder + '\n\n' + details);
+    ? 'Не удалось прочитать или записать библиотеку ScratchJGET. Проверьте место на диске и права доступа к папке.'
+    : 'ScratchJGET could not read or write the project library. Check free disk space and access to this folder.';
+  dialog.showErrorBox('ScratchJGET', message + '\n' + folder + '\n\n' + details);
 }
 
 // A synchronous caller must always receive a reply, including on access or disk

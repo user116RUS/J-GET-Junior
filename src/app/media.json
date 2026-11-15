@@ -214,7 +214,7 @@
       "width": 151,
       "height": 253,
       "ext": "svg",
-      "name": "Robot Blue",
+      "name": "Tic",
       "order": "characters,02 funky",
       "tags": [
         "characters",
@@ -226,7 +226,7 @@
       "width": 161,
       "height": 185,
       "ext": "svg",
-      "name": "Robot Violet",
+      "name": "Tac",
       "order": "characters,02 funky",
       "tags": [
         "characters",
@@ -238,7 +238,7 @@
       "width": 213,
       "height": 198,
       "ext": "svg",
-      "name": "Robot Amber",
+      "name": "Toc",
       "order": "characters,02 funky",
       "tags": [
         "characters",
@@ -1644,15 +1644,15 @@
   "compatibilitySprites": [
     {
       "md5": "Cat.svg",
-      "width": 200,
-      "height": 240,
-      "name": "Robot Mint"
+      "width": 166,
+      "height": 232,
+      "name": "Cat"
     },
     {
       "md5": "Cat2.svg",
-      "width": 200,
-      "height": 240,
-      "name": "Robot Mint"
+      "width": 166,
+      "height": 232,
+      "name": "Cat"
     }
   ]
 }

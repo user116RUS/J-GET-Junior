@@ -90,7 +90,8 @@ export default class Menu {
         close.textContent = '×';
         close.setAttribute('aria-label', 'Закрыть библиотеку звуков');
         close.onclick = () => Menu.closeMyOpenMenu();
-        newHTML('div', 'sound-menu-hint', mu).textContent = '▶ — послушать. Нажмите на название, чтобы выбрать.';
+        newHTML('div', 'sound-menu-hint', mu).textContent =
+            '▶ — послушать. Нажмите на название, чтобы добавить звук в проект.';
         const tabs = newHTML('div', 'sound-menu-tabs', mu);
         const list = newHTML('div', 'sound-menu-list', mu);
         const status = newHTML('div', 'sound-menu-status', mu);
@@ -252,8 +253,10 @@ export default class Menu {
         close.onclick = () => Menu.closeMyOpenMenu();
         const arrowRow = newHTML('div', 'keyboard-menu-arrows', mu);
         const letters = newHTML('div', 'keyboard-menu-letters', mu);
-        KeyboardKeys.values.forEach((key, index) => {
-            const button = newHTML('button', 'keyboard-menu-key', index < 4 ? arrowRow : letters);
+        KeyboardKeys.values.forEach(key => {
+            const special = key === 'Space' || key.indexOf('Arrow') === 0;
+            const button = newHTML('button', 'keyboard-menu-key', special ? arrowRow : letters);
+            if (key === 'Space') button.className += ' keyboard-menu-space';
             button.type = 'button';
             button.textContent = KeyboardKeys.label(key);
             button.setAttribute('data-key', key);

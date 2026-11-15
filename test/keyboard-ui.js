@@ -72,9 +72,11 @@ async function main() {
     }
 
     const keys = await load('utils/KeyboardKeys.js');
-    assert.strictEqual(keys.values.length, 37);
-    assert.strictEqual(new Set(keys.values).size, 37);
+    assert.strictEqual(keys.values.length, 38);
+    assert.strictEqual(new Set(keys.values).size, 38);
     assert.strictEqual(keys.normalize('Ё'), 'ё');
+    for (const value of ['Space', ' ', 'Spacebar']) assert.strictEqual(keys.normalize(value), 'Space');
+    assert.strictEqual(keys.label('Space'), 'Пробел');
     assert.strictEqual(keys.normalize('garbage'), 'ArrowRight');
     const specs = await load('editor/blocks/BlockSpecs.js');
     specs.loadGraphics();
@@ -97,6 +99,7 @@ async function main() {
         scripts.sc.appendChild(block.div);
         assert(block.aStart);
         assert.strictEqual(block.arg.keyLabel.textContent, keys.label(value));
+        assert.strictEqual(block.arg.div.getAttribute('data-key'), value);
         const serialized = JSON.parse(JSON.stringify(Project.encodeStrip(block)));
         assert.strictEqual(serialized[0][0], 'onkey');
         assert.strictEqual(serialized[0][1], value);
@@ -112,7 +115,7 @@ async function main() {
     Menu.openDropDown(selected.div, selected.arg.closeKeyMenu);
     const picker = Menu.openMenu;
     const buttons = picker.childNodes.slice(2).reduce((all, row) => all.concat(row.childNodes), []);
-    assert.strictEqual(buttons.length, 37);
+    assert.strictEqual(buttons.length, 38);
     const letter = buttons.find(button => button.getAttribute('data-key') === 'ё');
     letter.onmousedown(click);
     assert.strictEqual(selected.getArgValue(), 'ё');
@@ -123,9 +126,20 @@ async function main() {
     Menu.openDropDown(selected.div, selected.arg.closeKeyMenu);
     selected.arg.closeKeyMenu(click, Menu.openMenu, selected.div, 'ё');
     assert.strictEqual(undo.length, 1);
+    Menu.openDropDown(selected.div, selected.arg.closeKeyMenu);
+    const space = Menu.openMenu.childNodes[2].childNodes.find(button => button.getAttribute('data-key') === 'Space');
+    assert.strictEqual(space.textContent, 'Пробел');
+    assert(space.className.includes('keyboard-menu-space'));
+    space.onmousedown(click);
+    assert.strictEqual(selected.getArgValue(), 'Space');
+    assert.strictEqual(selected.arg.keyLabel.textContent, 'Пробел');
+    assert.strictEqual(selected.arg.div.getAttribute('data-key'), 'Space');
+    assert.strictEqual(specs.blockDesc(selected, spr).onkey, 'Нажата клавиша Пробел');
+    assert.strictEqual(undo.length, 2);
+    assert.strictEqual(Menu.openMenu, undefined);
     const oldBlock = scripts.recreateStrip([['onflag', null, 0, 0]])[0];
     assert(oldBlock.aStart);
     assert.strictEqual(oldBlock.getArgValue(), null);
-    console.log('PASS: 37 keyboard arguments, palette, start shape, serialize/reopen, copy, picker selection and undo record');
+    console.log('PASS: 38 keyboard arguments including Space, palette, start shape, serialize/reopen, copy, picker selection and undo record');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

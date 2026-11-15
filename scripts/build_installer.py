@@ -24,24 +24,26 @@ def main():
     args.output = args.output.resolve()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     source = Path(__file__).resolve().parent
-    with tempfile.TemporaryDirectory(prefix="jget-junior-installer-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="scratchjget-installer-") as temporary:
         work = Path(temporary)
         with zipfile.ZipFile(args.portable) as archive:
             for item in archive.infolist():
                 name = PurePosixPath(item.filename)
-                if not name.parts or name.parts[0] != "J-GET-Junior" or ".." in name.parts or "\\" in item.filename:
+                if not name.parts or name.parts[0] != "ScratchJGET" or ".." in name.parts or "\\" in item.filename:
                     raise ValueError("Unexpected archive path")
             archive.extractall(work)
-        payload = work / "J-GET-Junior"
+        payload = work / "ScratchJGET"
         package = json.loads((payload / "resources/app/package.json").read_text())
+        if package.get("productName") != "ScratchJGET":
+            raise ValueError("Unexpected application product name")
         version = package["version"]
         match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)-jget\.(\d+)", version)
         if not match:
-            raise ValueError("Unexpected J-GET Junior application version")
+            raise ValueError("Unexpected ScratchJGET application version")
         # Continue the numeric version sequence after Classroom 1.3.2.4.
         file_version = ".".join(match.groups()[:3]) + "." + str(4 + int(match.group(4)))
-        if not (payload / "J-GET-Junior.exe").is_file():
-            raise ValueError("The J-GET Junior executable is missing")
+        if not (payload / "ScratchJGET.exe").is_file():
+            raise ValueError("The ScratchJGET executable is missing")
         guide = source.parent / "docs/Windows-класс.txt"
         (payload / "Прочитайте.txt").write_bytes(guide.read_text().replace("\n", "\r\n").encode("utf-8-sig"))
         files = sorted(p for p in payload.rglob("*") if p.is_file())

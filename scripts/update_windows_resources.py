@@ -1,7 +1,7 @@
 """Set the Windows application's icons and version metadata without changing code.
 
 Install lief==1.0.0 in a build-only environment, then run:
-python scripts/update_windows_resources.py PATH/TO/J-GET-Junior.exe
+python scripts/update_windows_resources.py PATH/TO/ScratchJGET.exe
 """
 import argparse
 from pathlib import Path
@@ -41,7 +41,7 @@ def update(executable):
     version = json.loads((root / 'package.json').read_text())['version']
     match = re.fullmatch(r'(\d+)\.(\d+)\.(\d+)-jget\.(\d+)', version)
     if not match:
-        raise ValueError('Unexpected J-GET Junior version')
+        raise ValueError('Unexpected ScratchJGET version')
     major, minor, patch, release = map(int, match.groups())
     build = 4 + release
     numeric = f'{major}.{minor}.{patch}.{build}'
@@ -75,10 +75,10 @@ def update(executable):
     tree.add_child(groups)
 
     strings = {
-        'CompanyName': 'J-GET', 'FileDescription': 'J-GET Junior',
-        'FileVersion': numeric, 'InternalName': 'J-GET-Junior',
-        'LegalCopyright': 'Copyright (c) 2016, MIT; J-GET Junior contributors',
-        'OriginalFilename': 'J-GET-Junior.exe', 'ProductName': 'J-GET Junior',
+        'CompanyName': 'J-GET', 'FileDescription': 'ScratchJGET',
+        'FileVersion': numeric, 'InternalName': 'ScratchJGET',
+        'LegalCopyright': 'Copyright (c) 2016, MIT; ScratchJGET contributors',
+        'OriginalFilename': 'ScratchJGET.exe', 'ProductName': 'ScratchJGET',
         'ProductVersion': version, 'SquirrelAwareVersion': '1'
     }
     table = version_block('040904b0', children=b''.join(
@@ -108,7 +108,7 @@ def update(executable):
     resource_version = checked.resources_manager.version[0]
     assert resource_version.file_info.file_version_ms == high
     assert resource_version.file_info.file_version_ls == low
-    assert 'ProductName: J-GET Junior' in str(resource_version)
+    assert 'ProductName: ScratchJGET' in str(resource_version)
     output.replace(executable)
     print(f'Updated Windows resources: {version} / {numeric}; {count} icon sizes; code sections unchanged')
 

@@ -1,0 +1,474 @@
+{
+  "phase": "create",
+  "versions": {
+    "http_parser": "2.7.0",
+    "node": "8.2.1",
+    "v8": "5.9.211.38",
+    "uv": "1.13.1",
+    "zlib": "1.2.11",
+    "ares": "1.10.1-DEV",
+    "modules": "57",
+    "openssl": "1.0.2l",
+    "electron": "1.8.2-beta.3",
+    "chrome": "59.0.3071.115",
+    "atom-shell": "1.8.2-beta.3"
+  },
+  "arch": "x64",
+  "checks": [
+    "editor opened with sprite",
+    "native ArrowRight trigger starts",
+    "native keyboard script moves sprite",
+    "target collision detected natively",
+    "distant target does not collide",
+    "native keyboard picker contains Пробел",
+    "Space picker choice fits inside visible menu",
+    "native menu selection updates Space block and label",
+    "Space block label is not clipped",
+    "real DOM Space keydown reaches keyboard handler",
+    "Space keydown moves sprite upward",
+    "library cancel leaves editor ready in same event turn",
+    "category changes immediately after library cancel",
+    "synthetic stage press hit-tests the intended character",
+    "synthetic stage press hit-tests the intended character",
+    "synthetic stage press hit-tests the intended character",
+    "synthetic stage press hit-tests the intended character",
+    "synthetic stage press hit-tests the intended character",
+    "foreground synthetic character-click and green-flag timing collected (five runs each)",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "native sound preview creates an independent player",
+    "native library preview advances before adding the sound",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "adding a sound stops its preview",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "adding dog retains the cat and original pop palette blocks",
+    "another character can reuse both project sounds",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "sound control exists before click",
+    "native + Звук opens the library",
+    "sound control exists before click",
+    "sound control exists before click",
+    "choosing a library sound closes the picker",
+    "selected sound remains in the project collection",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound collection displays five blocks per page",
+    "microphone and + Звук remain available with many sounds",
+    "sound control exists before click",
+    "next palette page exposes the newest sound",
+    "all six selected sounds are reachable through palette pages",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "microphone still opens its recording dialog",
+    "native project serializer includes all selected sounds",
+    "paint editor records a drawing change",
+    "paint editor saved new SVG costume",
+    "all 43 sounds decode in native Electron",
+    "native cat audio playing and ended"
+  ],
+  "keyboard": {
+    "before": 240,
+    "after": 264,
+    "interval": 8,
+    "threads": []
+  },
+  "focus": {
+    "hidden": false,
+    "hasFocus": true
+  },
+  "spaceMenuBounds": {
+    "viewport": {
+      "width": 1020,
+      "height": 772
+    },
+    "frame": "[object ClientRect]",
+    "menu": {
+      "left": 330,
+      "top": 478,
+      "right": 706,
+      "bottom": 764
+    },
+    "choice": {
+      "left": 567,
+      "top": 523,
+      "right": 677,
+      "bottom": 563
+    }
+  },
+  "spaceInput": {
+    "before": {
+      "x": 264,
+      "y": 180
+    },
+    "syntheticDOM": true,
+    "handlerMs": 2.019999999999527,
+    "firstMovementMs": 2.5200000000004366,
+    "after": {
+      "x": 264,
+      "y": 176
+    }
+  },
+  "cancelToCategoryMs": 9.195000000000618,
+  "inputLatency": {
+    "syntheticDOM": true,
+    "click": [
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.2849999999998545,
+        "firstMovementMs": 17.210000000000946,
+        "after": {
+          "x": 244,
+          "y": 180
+        },
+        "pressHandlerMs": 6.640000000000327
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.1349999999983993,
+        "firstMovementMs": 25.484999999999673,
+        "after": {
+          "x": 244,
+          "y": 180
+        },
+        "pressHandlerMs": 6.215000000001055
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.12499999999818101,
+        "firstMovementMs": 10.514999999999418,
+        "after": {
+          "x": 244,
+          "y": 180
+        },
+        "pressHandlerMs": 1.7849999999998545
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.2600000000002183,
+        "firstMovementMs": 5.645000000000437,
+        "after": {
+          "x": 244,
+          "y": 180
+        },
+        "pressHandlerMs": 2
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.125,
+        "firstMovementMs": 6.969999999999345,
+        "after": {
+          "x": 244,
+          "y": 180
+        },
+        "pressHandlerMs": 1.9899999999997817
+      }
+    ],
+    "flag": [
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 1.2549999999991996,
+        "firstMovementMs": 6.75,
+        "after": {
+          "x": 244,
+          "y": 180
+        }
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.9249999999992724,
+        "firstMovementMs": 11.985000000000582,
+        "after": {
+          "x": 244,
+          "y": 180
+        }
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.7599999999983993,
+        "firstMovementMs": 8.024999999999636,
+        "after": {
+          "x": 244,
+          "y": 180
+        }
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.9049999999988358,
+        "firstMovementMs": 4.315000000000509,
+        "after": {
+          "x": 244,
+          "y": 180
+        }
+      },
+      {
+        "before": {
+          "x": 240,
+          "y": 180
+        },
+        "syntheticDOM": true,
+        "handlerMs": 0.7449999999989814,
+        "firstMovementMs": 5.334999999999127,
+        "after": {
+          "x": 244,
+          "y": 180
+        }
+      }
+    ],
+    "clickSummaryMs": {
+      "min": 5.645000000000437,
+      "median": 10.514999999999418,
+      "max": 25.484999999999673
+    },
+    "flagSummaryMs": {
+      "min": 4.315000000000509,
+      "median": 6.75,
+      "max": 11.985000000000582
+    }
+  },
+  "projectSounds": {
+    "initialLayout": {
+      "panelWidth": 1020,
+      "selectorWidth": 354,
+      "visibleSounds": [
+        "pop.mp3",
+        "library/cat.wav",
+        "library/dog.wav"
+      ],
+      "rightmost": 699.5
+    },
+    "firstPageLayout": {
+      "panelWidth": 1020,
+      "selectorWidth": 354,
+      "visibleSounds": [
+        "pop.mp3",
+        "library/cat.wav",
+        "library/dog.wav",
+        "library/duck.wav",
+        "library/cow.wav"
+      ],
+      "rightmost": 901
+    },
+    "secondPageLayout": {
+      "panelWidth": 1020,
+      "selectorWidth": 354,
+      "visibleSounds": [
+        "library/horse.wav",
+        "library/owl.wav"
+      ],
+      "rightmost": 698.5
+    },
+    "selected": [
+      "library/cat.wav",
+      "library/dog.wav",
+      "library/duck.wav",
+      "library/cow.wav",
+      "library/horse.wav",
+      "library/owl.wav"
+    ]
+  },
+  "expected": {
+    "shown": true,
+    "type": "sprite",
+    "md5": "03f8965a35e9060643a41f44bd57ed20.svg",
+    "id": "Tic 1",
+    "flip": false,
+    "name": "Tic",
+    "angle": 0,
+    "scale": 0.5,
+    "speed": 2,
+    "defaultScale": 0.5,
+    "sounds": [
+      "pop.mp3"
+    ],
+    "xcoor": 284,
+    "ycoor": 180,
+    "cx": 140,
+    "cy": 154,
+    "w": 281,
+    "h": 308,
+    "homex": 240,
+    "homey": 180,
+    "homescale": 0.5,
+    "homeshown": true,
+    "homeflip": false,
+    "scripts": [
+      [
+        [
+          "onkey",
+          "ArrowRight",
+          40,
+          40
+        ],
+        [
+          "forward",
+          1,
+          113,
+          40
+        ]
+      ],
+      [
+        [
+          "onkey",
+          "я",
+          40,
+          140
+        ],
+        [
+          "up",
+          1,
+          113,
+          140
+        ]
+      ],
+      [
+        [
+          "ontouchsprite",
+          "QA Target 1",
+          40,
+          240
+        ],
+        [
+          "forward",
+          1,
+          113,
+          240
+        ]
+      ],
+      [
+        [
+          "onflag",
+          "null",
+          330,
+          40
+        ],
+        [
+          "playsnd",
+          "library/cat.wav",
+          403,
+          40
+        ]
+      ],
+      [
+        [
+          "onkey",
+          "Space",
+          330,
+          140
+        ],
+        [
+          "up",
+          1,
+          403,
+          140
+        ]
+      ],
+      [
+        [
+          "onclick",
+          "null",
+          330,
+          240
+        ],
+        [
+          "forward",
+          1,
+          403,
+          240
+        ]
+      ],
+      [
+        [
+          "onflag",
+          "null",
+          40,
+          340
+        ],
+        [
+          "forward",
+          1,
+          113,
+          340
+        ]
+      ]
+    ]
+  },
+  "readyForClose": true
+}

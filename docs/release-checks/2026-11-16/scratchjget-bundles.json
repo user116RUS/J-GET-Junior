@@ -1,0 +1,26 @@
+[
+  {
+    "CFBundleName": "ScratchJGET",
+    "CFBundleExecutable": "ScratchJGET",
+    "CFBundleIdentifier": "it.jget.junior",
+    "CFBundleVersion": "1.3.2.7"
+  },
+  {
+    "CFBundleName": "ScratchJGET Helper EH",
+    "CFBundleExecutable": "ScratchJGET Helper EH",
+    "CFBundleIdentifier": "it.jget.junior.helper.EH",
+    "CFBundleVersion": null
+  },
+  {
+    "CFBundleName": "ScratchJGET Helper NP",
+    "CFBundleExecutable": "ScratchJGET Helper NP",
+    "CFBundleIdentifier": "it.jget.junior.helper.NP",
+    "CFBundleVersion": null
+  },
+  {
+    "CFBundleName": "ScratchJGET Helper",
+    "CFBundleExecutable": "ScratchJGET Helper",
+    "CFBundleIdentifier": "it.jget.junior.helper",
+    "CFBundleVersion": null
+  }
+]

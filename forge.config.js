@@ -44,14 +44,19 @@ module.exports = {
 	},
 	electronPackagerConfig: {
 		packageManager: "npm",
+		name: "ScratchJGET",
+		appBundleId: "it.jget.junior",
+		helperBundleId: "it.jget.junior.helper",
 		appCopyright: "Copyright (c) 2016, MIT",
 		icon: iconFile
 	},
 	electronWinstallerConfig: {
+		// Retain the package ID used by existing Squirrel installations.
 		"name": "J-GET-Junior",
+		title: "ScratchJGET",
 		loadingGif: installerGifWindows,
 	    iconUrl: iconFileWindows,
-	    exe: 'J-GET-Junior.exe',
+	    exe: 'ScratchJGET.exe',
 	    setupIcon: iconFileWindows
 	},
 	electronInstallerDebian: {},
@@ -62,8 +67,7 @@ module.exports = {
 	},
 	windowsStoreConfig: {
 		"packageName": "",
-		"name": "J-GET-Junior"
+		"name": "ScratchJGET"
 	}
 
 }
-  

@@ -1,0 +1,76 @@
+{
+  "phase": "reopen",
+  "versions": {
+    "http_parser": "2.7.0",
+    "node": "8.2.1",
+    "v8": "5.9.211.38",
+    "uv": "1.13.1",
+    "zlib": "1.2.11",
+    "ares": "1.10.1-DEV",
+    "modules": "57",
+    "openssl": "1.0.2l",
+    "electron": "1.8.2-beta.3",
+    "chrome": "59.0.3071.115",
+    "atom-shell": "1.8.2-beta.3"
+  },
+  "arch": "x64",
+  "checks": [
+    "editor opened with sprite",
+    "ScratchJGET appears in window and page titles",
+    "updated app version is running",
+    "painted costume restored",
+    "keyboard collision and sound scripts restored exactly",
+    "runtime position persisted in saved project",
+    "reopened stage returns to saved home position",
+    "all chosen project sounds survive native close and reopen, including unused choices",
+    "reopened green palette offers both cat and dog",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "native sound block/control fits the visible green panel",
+    "all 43 sounds decode in native Electron",
+    "native cat audio playing and ended"
+  ],
+  "application": {
+    "name": "ScratchJGET",
+    "version": "1.3.2-jget.3",
+    "windowTitle": "ScratchJGET",
+    "documentTitle": "ScratchJGET"
+  },
+  "reopenedPosition": {
+    "x": 240,
+    "y": 180,
+    "homeX": 240,
+    "homeY": 180,
+    "storedX": 284,
+    "storedY": 180
+  },
+  "projectSounds": {
+    "reopened": [
+      "library/cat.wav",
+      "library/dog.wav",
+      "library/duck.wav",
+      "library/cow.wav",
+      "library/horse.wav",
+      "library/owl.wav"
+    ],
+    "layout": {
+      "panelWidth": 1020,
+      "selectorWidth": 354,
+      "visibleSounds": [
+        "pop.mp3",
+        "library/cat.wav",
+        "library/dog.wav",
+        "library/duck.wav",
+        "library/cow.wav"
+      ],
+      "rightmost": 901
+    }
+  },
+  "pass": true
+}

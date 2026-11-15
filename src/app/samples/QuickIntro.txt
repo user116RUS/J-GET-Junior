@@ -84,8 +84,8 @@
         "num": 1,
         "Cat 1": {
           "homeflip": false,
-          "cy": 126.5,
-          "cx": 75.5,
+          "cy": 116,
+          "cx": 83,
           "sounds": [
             "pop.mp3"
           ],
@@ -159,15 +159,15 @@
               ]
             ]
           ],
-          "md5": "Blue.svg",
+          "md5": "Cat.svg",
           "name": "key_character_cat",
           "ycoor": 246,
           "homex": 115,
           "homey": 246,
           "flip": false,
           "homescale": 0.5,
-          "w": 151,
-          "h": 253,
+          "w": 166,
+          "h": 232,
           "xcoor": 115,
           "homeshown": true,
           "defaultScale": 0.5

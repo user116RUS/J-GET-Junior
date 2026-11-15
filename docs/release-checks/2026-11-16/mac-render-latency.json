@@ -1,0 +1,386 @@
+{
+  "mode": "default-timed",
+  "versions": {
+    "http_parser": "2.7.0",
+    "node": "8.2.1",
+    "v8": "5.9.211.38",
+    "uv": "1.13.1",
+    "zlib": "1.2.11",
+    "ares": "1.10.1-DEV",
+    "modules": "57",
+    "openssl": "1.0.2l",
+    "electron": "1.8.2-beta.3",
+    "chrome": "59.0.3071.115",
+    "atom-shell": "1.8.2-beta.3"
+  },
+  "focus": {
+    "hidden": false,
+    "hasFocus": true
+  },
+  "samples": [
+    {
+      "index": 0,
+      "color": [
+        229,
+        27,
+        155
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            155,
+            27,
+            229,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 36.664999999999964,
+          "callbackMs": 20.329999999999927,
+          "pixelTransferMs": 17.71499999999969
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 36.664999999999964
+    },
+    {
+      "index": 1,
+      "color": [
+        23,
+        229,
+        201
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            201,
+            229,
+            23,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 47.38499999999976,
+          "callbackMs": 20.550000000000182,
+          "pixelTransferMs": 22.495000000000346
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 47.38499999999976
+    },
+    {
+      "index": 2,
+      "color": [
+        229,
+        27,
+        155
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            155,
+            27,
+            229,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 39.85500000000002,
+          "callbackMs": 21.735000000000127,
+          "pixelTransferMs": 24.049999999999727
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 39.85500000000002
+    },
+    {
+      "index": 3,
+      "color": [
+        23,
+        229,
+        201
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            201,
+            229,
+            23,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 61.42000000000007,
+          "callbackMs": 26.43000000000029,
+          "pixelTransferMs": 24.96499999999969
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 61.42000000000007
+    },
+    {
+      "index": 4,
+      "color": [
+        229,
+        27,
+        155
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            155,
+            27,
+            229,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 56.32500000000027,
+          "callbackMs": 23.184999999999945,
+          "pixelTransferMs": 23.924999999999727
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 56.32500000000027
+    },
+    {
+      "index": 5,
+      "color": [
+        23,
+        229,
+        201
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            201,
+            229,
+            23,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 51.25500000000011,
+          "callbackMs": 19.420000000000073,
+          "pixelTransferMs": 15.774999999999636
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 51.25500000000011
+    },
+    {
+      "index": 6,
+      "color": [
+        229,
+        27,
+        155
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            155,
+            27,
+            229,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 50.659999999999854,
+          "callbackMs": 20.889999999999418,
+          "pixelTransferMs": 20.19000000000051
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 50.659999999999854
+    },
+    {
+      "index": 7,
+      "color": [
+        23,
+        229,
+        201
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            201,
+            229,
+            23,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 44.17500000000018,
+          "callbackMs": 21.045000000000073,
+          "pixelTransferMs": 22.515000000000327
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 44.17500000000018
+    },
+    {
+      "index": 8,
+      "color": [
+        229,
+        27,
+        155
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            155,
+            27,
+            229,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 43.845000000000255,
+          "callbackMs": 25.324999999999818,
+          "pixelTransferMs": 24.220000000000255
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 43.845000000000255
+    },
+    {
+      "index": 9,
+      "color": [
+        23,
+        229,
+        201
+      ],
+      "capturePage": [
+        {
+          "raw": [
+            201,
+            229,
+            23,
+            255
+          ],
+          "matched": true,
+          "width": 220,
+          "height": 220,
+          "pixelX": 110,
+          "pixelY": 110,
+          "markerRect": {
+            "left": 20,
+            "top": 20,
+            "width": 110,
+            "height": 110
+          },
+          "elapsedMs": 58.31999999999971,
+          "callbackMs": 26.145000000000437,
+          "pixelTransferMs": 24.099999999999454
+        }
+      ],
+      "osWindow": {
+        "skipped": "Independent OS window pixels already matched in prior run; excluded from timing."
+      },
+      "firstMatchingCaptureMs": 58.31999999999971
+    }
+  ],
+  "pass": true,
+  "kind": "render-latency",
+  "synthetic": true,
+  "pixelFormat": "BGRA"
+}

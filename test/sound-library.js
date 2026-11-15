@@ -31,10 +31,14 @@ class Element {
         this.childNodes.splice(index, 1);
         child.parentNode = null;
     }
-    setAttribute(key, value) { this.attributes[key] = String(value); }
+    setAttribute(key, value) {
+        this.attributes[key] = String(value);
+        if (key === 'id' && Element.registry) Element.registry[value] = this;
+    }
     getAttribute(key) { return this.attributes[key]; }
     removeAttribute(key) { delete this.attributes[key]; }
     focus() {}
+    cloneNode() { return new Element(this.tagName); }
     getContext() {
         return {drawImage() {}, clearRect() {}, fillText() {}, measureText: () => ({width: 10})};
     }
@@ -77,6 +81,7 @@ async function main() {
     const frame = new Element('div');
     const scriptsContainer = new Element('div');
     const registry = {scriptscontainer: scriptsContainer};
+    Element.registry = registry;
     const previews = [];
     class PreviewAudio {
         constructor(url) { this.url = url; this.currentTime = 0; this.plays = 0; this.pauses = 0; previews.push(this); }
@@ -99,6 +104,8 @@ async function main() {
             return node;
         },
         newDiv: parent => parent.appendChild(new Element('div')),
+        newCanvas: parent => parent.appendChild(new Element('canvas')),
+        drawScaled() {},
         newP: (parent, text) => {
             const node = parent.appendChild(new Element('p'));
             node.textContent = text;
@@ -109,10 +116,13 @@ async function main() {
     const undo = [];
     const audioCalls = [];
     const previewSource = 'data:audio/wav;base64,UklGRg==';
+    const paletteBridge = {};
     const services = {
-        ScratchJr: {storyStart() {}, stage: {pages: []}, clearSelection() {}, blur() {}, stopStrips() {}},
+        ScratchJr: {storyStart() {}, stage: {pages: []}, clearSelection() {}, blur() {}, stopStrips() {}, log() {}, getTime() {}},
         Localization: {localize: key => key},
         Undo: {record: action => undo.push(action)},
+        Palette: paletteBridge,
+        Record: {available: true},
         iOS: {
             getSoundSource(id) { audioCalls.push(['source', id]); return previewSource; },
             registerSound(dir, id, done) { audioCalls.push(['register', id]); done(id); },
@@ -244,6 +254,7 @@ async function main() {
     assert.strictEqual(block.getArgValue(), chosen);
     assert.strictEqual(Menu.openMenu, undefined);
     assert.deepStrictEqual(json(undo), [{action: 'scripts', where: page.id, who: owner.id}]);
+    assert.deepStrictEqual(json(services.ScratchJr.stage.librarySounds), [chosen]);
     Menu.openSounds(block.div, block.arg.closeSoundMenu);
     block.arg.closeSoundMenu(click, Menu.openMenu, block.div, chosen);
     assert.strictEqual(undo.length, 1, 'choosing the current sound does not add an undo step');
@@ -253,8 +264,13 @@ async function main() {
     palette.appendChild(paletteBlock.div);
     Menu.openSounds(paletteBlock.div, paletteBlock.arg.closeSoundMenu);
     paletteBlock.arg.closeSoundMenu(click, Menu.openMenu, paletteBlock.div, chosen);
-    assert.strictEqual(paletteBlock.getArgValue(), chosen);
-    assert.strictEqual(undo.length, 1, 'palette selection does not change the saved project');
+    assert.strictEqual(paletteBlock.getArgValue(), 'pop.mp3', 'adding a sound keeps the previous palette block');
+    assert.strictEqual(undo.length, 1, 'adding an already saved sound is not another edit');
+    const second = ids.find(id => id !== chosen && id !== 'pop.mp3');
+    Menu.openSounds(paletteBlock.div, paletteBlock.arg.closeSoundMenu);
+    paletteBlock.arg.closeSoundMenu(click, Menu.openMenu, paletteBlock.div, second);
+    assert.deepStrictEqual(json(services.ScratchJr.stage.librarySounds), [chosen, second], 'A then B keeps both');
+    assert.deepStrictEqual(json(undo[1]), {action: 'librarysound', where: page.id, who: owner.id});
     assert.strictEqual(specs.defs.playsnd[4], 'pop.mp3', 'block defaults remain backward compatible');
     assert.deepStrictEqual(owner.sounds, ['pop.mp3', 'recorded-voice.webm'], 'selection must not shift recording indices');
 
@@ -272,8 +288,83 @@ async function main() {
     assert.strictEqual(playing.pauses, 1, 'closing stops preview audio');
     assert.strictEqual(playing.currentTime, 0, 'preview is rewound when closing');
     assert.strictEqual(block.getArgValue(), chosen, 'preview/cancel preserves selection');
-    assert.strictEqual(undo.length, 1);
-    console.log('PASS: ' + ids.length + ' catalog assets, preload, persistence/copy, playback continuation, picker/undo, palette, recordings and preview cancellation');
+    assert.strictEqual(undo.length, 2);
+
+    // Exercise the actual project serializer/reloader, including old files that
+    // only retained a built-in sound in a nested script.
+    const stage = services.ScratchJr.stage;
+    page.encodePage = () => ({sprites: [owner.id], [owner.id]: {
+        type: 'sprite', sounds: owner.sounds.slice(), scripts: [json(Project.encodeStrip(block))]
+    }});
+    stage.pages = [page];
+    stage.currentPage = page;
+    stage.getPagesID = () => stage.pages.map(item => item.id);
+    const saved = json(Project.getProject(page.id));
+    assert.deepStrictEqual(saved.librarySounds, [chosen, second]);
+    assert.deepStrictEqual(json(Project.getUndo()).librarySounds, [chosen, second]);
+    const recreatePage = Project.recreatePage;
+    Project.recreatePage = () => stage.pages.push(page);
+    stage.librarySounds = [];
+    Project.recreate(saved);
+    assert.deepStrictEqual(json(stage.librarySounds), [chosen, second], 'reopen retains selected but unused sounds');
+    Project.recreatePage = recreatePage;
+    const legacy = json(saved);
+    delete legacy.librarySounds;
+    legacy.page1.cat.scripts = [[['repeat', 2, 0, 0, [['playsnd', second, 0, 0]]]]];
+    assert.deepStrictEqual(json(catalog.fromProject(legacy)), [second], 'legacy nested scripts seed the collection');
+    assert.deepStrictEqual(json(catalog.selected({librarySounds: [chosen, chosen, 'missing.wav', 'pop.mp3']})), [chosen]);
+
+    // Render and page through the actual green palette: each choice is a block,
+    // both sprites share library sounds, and recording indices remain stable.
+    const Palette = await load('editor/ui/Palette.js');
+    paletteBridge.showSound = id => Palette.showSound(id);
+    Object.defineProperty(paletteBridge, 'numcat', {get: () => Palette.numcat});
+    specs.palettes = specs.setupPalettesDef();
+    specs.categories = specs.setupCategories();
+    const panel = new Element('div');
+    registry.blockspalette = panel;
+    Palette.setup(panel);
+    Palette.selectCategory(3);
+    const paletteValues = () => registry.palette.childNodes.filter(node => node.owner)
+        .map(node => node.owner.getArgValue());
+    assert.deepStrictEqual(paletteValues(), ['pop.mp3', chosen, second, 1]);
+    assert.strictEqual(registry.palette.childNodes.filter(node => node.onmousedown === Palette.recordSound).length, 1);
+    services.ScratchJr.getSprite = () => destination;
+    Palette.selectCategory(3);
+    assert.deepStrictEqual(paletteValues(), ['pop.mp3', chosen, second], 'other sprites share the collection');
+    services.ScratchJr.getSprite = () => owner;
+    const add = registry.palette.childNodes.find(node => node.textContent === '+ Звук');
+    add.onclick(click);
+    assert(Menu.openMenu, 'the green panel has a dedicated library button');
+    Menu.closeMyOpenMenu();
+    for (const id of ids) Palette.addProjectSound(click, null, null, id);
+    assert.strictEqual(catalog.selected(stage).length, ids.length - 1);
+    Palette.showSound('pop.mp3');
+    const shown = [];
+    let next;
+    do {
+        const visible = paletteValues();
+        assert(visible.length <= 5, 'a large collection fits the panel');
+        shown.push(...visible);
+        assert(registry.palette.childNodes.some(node => node.textContent === '+ Звук'));
+        assert(registry.palette.childNodes.some(node => node.onmousedown === Palette.recordSound));
+        next = registry.palette.childNodes.find(node => node.title === 'Следующие звуки');
+        if (next && !next.disabled) next.onclick();
+        else break;
+    } while (true);
+    assert.deepStrictEqual(shown.filter(value => typeof value === 'string').sort(), ids.slice().sort());
+    assert.deepStrictEqual(shown.filter(value => typeof value === 'number'), [1]);
+    assert.deepStrictEqual(owner.sounds, ['pop.mp3', 'recorded-voice.webm']);
+
+    const Undo = await load('editor/ui/Undo.js');
+    const before = json(saved);
+    before.librarySounds = [chosen];
+    Undo.smartRecreate('prev', {action: 'librarysound'}, before);
+    assert.deepStrictEqual(json(stage.librarySounds), [chosen], 'undo removes only the added sound');
+    Undo.smartRecreate('next', {action: 'librarysound'}, saved);
+    assert.deepStrictEqual(json(stage.librarySounds), [chosen, second], 'redo restores the sound');
+    assert.deepStrictEqual(paletteValues(), ['pop.mp3', chosen, second, 1]);
+    console.log('PASS: ' + ids.length + ' assets, preload, script persistence/copy/playback, project collection save/reopen/migration/undo, paged palette, recordings and preview cancellation');
 }
 
 main().catch(error => { console.error(error); process.exitCode = 1; });

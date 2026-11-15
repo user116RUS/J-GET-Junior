@@ -5,6 +5,7 @@
 import ScratchJr from '../ScratchJr';
 import Block from '../blocks/Block';
 import BlockSpecs from '../blocks/BlockSpecs';
+import Menu from '../blocks/Menu';
 import ScriptsPane from './ScriptsPane';
 import Undo from './Undo';
 import iOS from '../../iPad/iOS';
@@ -13,6 +14,7 @@ import Events from '../../utils/Events';
 import Rectangle from '../../geom/Rectangle';
 import DrawPath from '../../utils/DrawPath';
 import ScratchAudio from '../../utils/ScratchAudio';
+import SoundLibrary from '../../utils/SoundLibrary';
 import Record from './Record';
 import {frame, gn, localx, newHTML, scaleMultiplier, isTablet, newDiv,
     setProps, globalx, localy, globaly, drawScaled, newCanvas,
@@ -26,6 +28,8 @@ let blockdy = 5;
 let timeoutid = undefined;
 let helpballoon = undefined;
 let dxblocks = 10;
+let soundPage = 0;
+const soundsPerPage = 5;
 
 export default class Palette {
     static get numcat () {
@@ -84,6 +88,7 @@ export default class Palette {
         };
         for (var i = 0; i < pal.childElementCount; i++) {
             var ths = pal.childNodes[i];
+            if (!ths.owner) continue;
             if (!hitRect(ths, pt)) {
                 continue;
             }
@@ -287,7 +292,7 @@ export default class Palette {
     static getBlockNamed (str) {
         var pal = gn('palette');
         for (var i = 0; i < pal.childElementCount; i++) {
-            if (pal.childNodes[i].owner.blocktype == str) {
+            if (pal.childNodes[i].owner && pal.childNodes[i].owner.blocktype == str) {
                 return pal.childNodes[i];
             }
         }
@@ -346,6 +351,7 @@ export default class Palette {
     static selectCategory (n) {
         var div = gn('selectors');
         // set the icons for text or sprite
+        if (numcat != n) soundPage = 0;
         numcat = n;
         var currentSel = div.childNodes[n + 1];
         for (var i = 1; i < div.childElementCount; i++) {
@@ -377,7 +383,7 @@ export default class Palette {
         if ((n == (BlockSpecs.categories.length - 1)) && (ScratchJr.stage.pages.length > 1)) {
             Palette.addPagesBlocks(dx);
         }
-        if ((n == 3) && (ScratchJr.getSprite().sounds.length > 0)) {
+        if (n == 3) {
             Palette.addSoundsBlocks(dxblocks);
         }
     }
@@ -420,19 +426,83 @@ export default class Palette {
     static addSoundsBlocks (dx) {
         var pal = gn('palette');
         var spr = ScratchJr.getSprite();
-        var list = spr ? spr.sounds : [];
+        var list = Palette.getSoundChoices();
         var newb;
-        
-        for (var i = 0; i < list.length; i++) {
-            var op = (MediaLib.sounds.indexOf(list[i]) < 0) ? 'playusersnd' : 'playsnd';
-            var val = (MediaLib.sounds.indexOf(list[i]) < 0) ? i : list[i];
-            newb = Palette.addBlockSound(pal, op, val, dx, blockdy);
+        var pages = Math.ceil(list.length / soundsPerPage);
+        soundPage = Math.min(soundPage, pages - 1);
+        var first = soundPage * soundsPerPage;
+        for (var i = first; i < Math.min(first + soundsPerPage, list.length); i++) {
+            newb = Palette.addBlockSound(pal, list[i].op, list[i].value, dx, blockdy);
             newb.lift();
             dx += betweenblocks;
         }
-        if ((list.length < 6) && Record.available && newb) {
+        const add = Palette.soundButton(pal, '+ Звук', 'Добавить звук из библиотеки', dx, 68);
+        add.onclick = evt => {
+            evt.preventDefault();
+            evt.stopPropagation();
+            ScratchJr.clearSelection();
+            ScratchJr.stopStrips();
+            Menu.openSounds({owner: {arg: {argValue: ''}}}, Palette.addProjectSound);
+        };
+        dx += 76 * scaleMultiplier;
+        // Library choices do not consume the five available recording slots.
+        if (spr && spr.sounds.filter(id => MediaLib.sounds.indexOf(id) < 0).length < 5 && Record.available && newb) {
             Palette.drawRecordSound(newb.div.offsetWidth, newb.div.offsetHeight, dx);
+            dx += betweenblocks;
         }
+        if (pages > 1) {
+            const previous = Palette.soundButton(pal, '‹', 'Предыдущие звуки', dx, 26);
+            previous.disabled = soundPage === 0;
+            previous.onclick = () => { soundPage--; Palette.selectCategory(3); };
+            dx += 30 * scaleMultiplier;
+            const next = Palette.soundButton(pal, '›', 'Следующие звуки', dx, 26);
+            next.disabled = soundPage === pages - 1;
+            next.onclick = () => { soundPage++; Palette.selectCategory(3); };
+        }
+    }
+
+    static getSoundChoices () {
+        const spr = ScratchJr.getSprite();
+        const library = ['pop.mp3'].concat(SoundLibrary.selected(ScratchJr.stage));
+        const recordings = [];
+        (spr ? spr.sounds : []).forEach((id, index) => {
+            if (SoundLibrary.has(id)) {
+                if (library.indexOf(id) < 0) library.push(id);
+            } else {
+                recordings.push({op: 'playusersnd', value: index});
+            }
+        });
+        return library.map(id => ({op: 'playsnd', value: id})).concat(recordings);
+    }
+
+    static soundButton (parent, label, title, dx, width) {
+        const button = newHTML('button', 'sound-palette-button', parent);
+        button.type = 'button';
+        button.textContent = label;
+        button.title = title;
+        button.setAttribute('aria-label', title);
+        setProps(button.style, {left: dx + 'px', width: (width * scaleMultiplier) + 'px'});
+        button.onmousedown = evt => evt.stopPropagation();
+        return button;
+    }
+
+    static showSound (id) {
+        const index = Palette.getSoundChoices().map(choice => choice.value).indexOf(id);
+        soundPage = Math.max(0, Math.floor(index / soundsPerPage));
+        Palette.selectCategory(3);
+    }
+
+    static addProjectSound (evt, menu, block, id) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        const added = SoundLibrary.remember(ScratchJr.stage, id);
+        Menu.closeMyOpenMenu();
+        if (added) {
+            const spr = ScratchJr.getSprite();
+            Undo.record({action: 'librarysound', where: spr.div.parentNode.owner.id, who: spr.id});
+            ScratchJr.storyStart('Palette.addProjectSound');
+        }
+        Palette.showSound(id);
     }
 
     static addBlockSound (parent, op, val, dx, dy) {
@@ -468,9 +538,7 @@ export default class Palette {
                 drawScaled(BlockSpecs.mic, cnv);
             };
         }
-        if (isTablet) {
-            div.onmousedown = Palette.recordSound;
-        }
+        div.onmousedown = Palette.recordSound;
     }
 
     static recordSound (e) {

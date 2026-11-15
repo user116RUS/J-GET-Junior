@@ -1,13 +1,14 @@
 const arrows = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 const letters = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'.split('');
-const symbols = {ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→'};
+const symbols = {ArrowUp: '↑', ArrowDown: '↓', ArrowLeft: '←', ArrowRight: '→', Space: 'Пробел'};
 
 export default class KeyboardKeys {
     static get values () {
-        return arrows.concat(letters);
+        return arrows.concat(['Space'], letters);
     }
 
     static normalize (value) {
+        if (value === 'Space' || value === ' ' || value === 'Spacebar') return 'Space';
         if (arrows.indexOf(value) >= 0) {
             return value;
         }

@@ -9,6 +9,7 @@ import iOS from '../../iPad/iOS';
 import IO from '../../iPad/IO';
 import Paint from '../../painteditor/Paint';
 import SVG2Canvas from '../../utils/SVG2Canvas';
+import SoundLibrary from '../../utils/SoundLibrary';
 import {frame, gn, newHTML, scaleMultiplier, getIdFor,
     isAndroid, setProps, setCanvasSize} from '../../utils/lib';
 
@@ -106,6 +107,7 @@ export default class Project {
             Project.loadData(metadata.json, doneProjectLoad);
         } else {
             mediaCount = 0;
+            ScratchJr.stage.librarySounds = [];
             let page = new Page(getIdFor('page')); // eslint-disable-line no-unused-vars
             Palette.selectCategory(1);
             // On Android 4.2, this comes up blank the first time, so try again in 100ms.
@@ -340,6 +342,7 @@ export default class Project {
         ScratchJr.log('Project data structures start loading', ScratchJr.getTime(), 'sec');
         mediaCount = 0;
         ScratchJr.stage.pages = [];
+        ScratchJr.stage.librarySounds = SoundLibrary.fromProject(data);
         var pages = data.pages;
         pageid = data.currentPage;
         for (var i = 0; i < pages.length; i++) {
@@ -508,6 +511,7 @@ export default class Project {
         var obj = {};
         obj.pages = ScratchJr.stage.getPagesID();
         obj.currentPage = pageid;
+        obj.librarySounds = SoundLibrary.selected(ScratchJr.stage);
         for (var i = 0; i < ScratchJr.stage.pages.length; i++) {
             obj[ScratchJr.stage.pages[i].id] = ScratchJr.stage.pages[i].encodePage();
         }

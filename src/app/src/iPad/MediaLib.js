@@ -68,8 +68,8 @@ export default class MediaLib {
     }
 
     static generateKeys () {
-        // Legacy IDs resolve to original J-GET artwork without adding duplicate
-        // robots to the character picker or changing saved project identifiers.
+        // Legacy IDs resolve to compatible costumes without adding duplicate
+        // entries to the character picker or changing saved project identifiers.
         compatibilitySprites.forEach(sprite => {
             keys[sprite.md5] = {width: sprite.width, height: sprite.height, name: sprite.name};
         });

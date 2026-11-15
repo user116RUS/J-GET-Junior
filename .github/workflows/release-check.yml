@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Draft release tag containing J-GET-Junior-Setup.exe
+        description: Draft release tag containing ScratchJGET-Setup.exe
         required: true
-        default: v1.3.2-jget.1
+        default: v1.3.2-jget.3
 permissions:
   contents: write # GitHub requires push access to retrieve draft releases.
 jobs:
@@ -19,16 +19,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Download draft installer
+      - name: Download previous release and draft installers
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
-          New-Item -ItemType Directory -Force artifacts | Out-Null
-          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern J-GET-Junior-Setup.exe --dir artifacts
+          New-Item -ItemType Directory -Force artifacts, artifacts/previous | Out-Null
+          gh release download v1.3.2-jget.1 --repo $env:GITHUB_REPOSITORY --pattern J-GET-Junior-Setup.exe --dir artifacts/previous
+          if ($LASTEXITCODE -ne 0) { throw 'Previous installer download failed' }
+          gh release download $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --pattern ScratchJGET-Setup.exe --dir artifacts
           if ($LASTEXITCODE -ne 0) { throw 'Installer download failed' }
-          Get-FileHash artifacts/J-GET-Junior-Setup.exe -Algorithm SHA256 | Format-List
-      - name: Install, exercise native application and uninstall
+          Get-FileHash artifacts/ScratchJGET-Setup.exe -Algorithm SHA256 | Format-List
+      - name: Upgrade previous installation, exercise application and uninstall
         run: ./test/native/windows-release.ps1
       - name: Upload verification evidence
         if: always()

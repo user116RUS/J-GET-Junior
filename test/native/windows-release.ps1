@@ -6,23 +6,61 @@ New-Item -ItemType Directory -Force $qaRoot, $installRoot, $evidence | Out-Null
 foreach ($folder in @('Documents', 'Profile', 'Local')) { New-Item -ItemType Directory -Force (Join-Path $qaRoot $folder) | Out-Null }
 Start-Transcript -Path (Join-Path $evidence 'verification.log')
 try {
-    $installer = (Resolve-Path 'artifacts/J-GET-Junior-Setup.exe').Path
-    $p = Start-Process -FilePath $installer -ArgumentList '/S' -Wait -PassThru
-    if ($p.ExitCode -ne 0) { throw "Installer exit code $($p.ExitCode)" }
-    $exe = Join-Path $installRoot 'app/J-GET-Junior.exe'
-    if (!(Test-Path $exe)) { throw 'Installed executable missing' }
+    $previousInstaller = (Resolve-Path 'artifacts/previous/J-GET-Junior-Setup.exe').Path
+    $previousInstallerHash = (Get-FileHash $previousInstaller -Algorithm SHA256).Hash
+    # Pin the actual public .1 asset; fail before executing an unexpected download.
+    if ($previousInstallerHash -ne '09f2f9e0125ae7b5582b67ace7ccbb8b69db7844a510fcfe241cb4d2e90fb4b8') { throw 'Previous installer SHA-256 mismatch' }
+    $installer = (Resolve-Path 'artifacts/ScratchJGET-Setup.exe').Path
+    $previousExe = Join-Path $installRoot 'app/J-GET-Junior.exe'
+    $exe = Join-Path $installRoot 'app/ScratchJGET.exe'
     $app = Join-Path $installRoot 'app/resources/app'
-    $manifest = Get-Content (Join-Path $app 'package.json') -Raw | ConvertFrom-Json
     $registryPath = 'HKCU:/Software/Microsoft/Windows/CurrentVersion/Uninstall/ScratchJr-Classroom'
-    if ((Get-ItemProperty $registryPath).DisplayName -ne 'J-GET Junior') { throw 'Installed product registration missing' }
+    $shortcutFolders = @([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('Programs'))
+    $shortcutReader = New-Object -ComObject WScript.Shell
+    function Assert-Shortcut([string]$shortcutPath, [string]$targetPath) {
+        if (!(Test-Path $shortcutPath)) { throw "Shortcut missing: $shortcutPath" }
+        $shortcut = $shortcutReader.CreateShortcut($shortcutPath)
+        if ($shortcut.TargetPath -ine $targetPath) { throw "Wrong shortcut target: $shortcutPath -> $($shortcut.TargetPath)" }
+    }
+
+    $previousInstall = Start-Process -FilePath $previousInstaller -ArgumentList '/S' -Wait -PassThru
+    if ($previousInstall.ExitCode -ne 0) { throw "Previous installer exit code $($previousInstall.ExitCode)" }
+    if (!(Test-Path $previousExe)) { throw 'Previous executable missing before upgrade' }
+    $previousManifest = Get-Content (Join-Path $app 'package.json') -Raw | ConvertFrom-Json
+    if ($previousManifest.productName -ne 'J-GET Junior' -or $previousManifest.version -ne '1.3.2-jget.1') { throw 'Incorrect previous installed product/version' }
+    $previousRegistration = Get-ItemProperty $registryPath
+    if ($previousRegistration.DisplayName -ne 'J-GET Junior' -or $previousRegistration.DisplayVersion -ne '1.3.2-jget.1') { throw 'Previous product registration missing' }
+    foreach ($folder in $shortcutFolders) {
+        Assert-Shortcut (Join-Path $folder 'J-GET Junior.lnk') $previousExe
+    }
+
+    # This checks installer preservation of an existing library directory.
+    # It does not claim migration of a native project created by .1.
     $standardProjects = Join-Path $env:LOCALAPPDATA 'ScratchJr-Classroom/Projects'
     New-Item -ItemType Directory -Force $standardProjects | Out-Null
     $sentinel = Join-Path $standardProjects 'release-test-sentinel.txt'
     [IO.File]::WriteAllText($sentinel, 'Preserve user project library')
     $sentinelHash = (Get-FileHash $sentinel -Algorithm SHA256).Hash
-    if ($manifest.productName -ne 'J-GET Junior' -or $manifest.version -ne '1.3.2-jget.1') { throw 'Incorrect installed product/version' }
+
+    $p = Start-Process -FilePath $installer -ArgumentList '/S' -Wait -PassThru
+    if ($p.ExitCode -ne 0) { throw "Upgrade installer exit code $($p.ExitCode)" }
+    if (!(Test-Path $exe)) { throw 'Installed executable missing' }
+    if (Test-Path $previousExe) { throw 'Upgrade left the previous executable' }
+    $manifest = Get-Content (Join-Path $app 'package.json') -Raw | ConvertFrom-Json
+    $expectedManifest = Get-Content 'package.json' -Raw | ConvertFrom-Json
+    if ($manifest.productName -ne $expectedManifest.productName -or $manifest.version -ne $expectedManifest.version) { throw 'Incorrect installed product/version' }
+    $registration = Get-ItemProperty $registryPath
+    if ($registration.DisplayName -ne 'ScratchJGET' -or $registration.DisplayVersion -ne $manifest.version) { throw 'Upgraded product registration incorrect' }
+    foreach ($folder in $shortcutFolders) {
+        if (Test-Path (Join-Path $folder 'J-GET Junior.lnk')) { throw "Upgrade left the previous shortcut in $folder" }
+        Assert-Shortcut (Join-Path $folder 'ScratchJGET.lnk') $exe
+    }
+    if ((Get-FileHash $sentinel -Algorithm SHA256).Hash -ne $sentinelHash) { throw 'Upgrade modified the existing library sentinel' }
+    $upgradeResult = @{from=$previousManifest.version;to=$manifest.version;previousInstallerSha256=$previousInstallerHash;previousExecutableRemoved=$true;previousShortcutsRemoved=$true;newShortcutTargetsVerified=$true;librarySentinelPreserved=$true;nativePreviousProjectMigrationTested=$false}
+    $upgradeResult | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $evidence 'upgrade.json')
     $env:NODE_PATH = Join-Path $app 'node_modules'
-    foreach ($test in Get-ChildItem 'test/*.js') {
+    $regressionTests = @(Get-ChildItem 'test/*.js')
+    foreach ($test in $regressionTests) {
         & node --experimental-vm-modules $test.FullName
         if ($LASTEXITCODE -ne 0) { throw "Regression failed: $($test.Name)" }
     }
@@ -32,6 +70,7 @@ try {
     $bootstrap = [IO.File]::ReadAllText((Resolve-Path 'test/native/bootstrap.js'))
     [IO.File]::WriteAllText($shim, $bootstrap + "`n" + $original, (New-Object Text.UTF8Encoding($false)))
     Copy-Item 'test/native/renderer.js' (Join-Path $qaRoot 'renderer.js')
+    Copy-Item 'test/native/project-sounds.js' (Join-Path $qaRoot 'project-sounds.js')
     $env:JGET_QA_ROOT = $qaRoot
     foreach ($phase in @('create', 'reopen')) {
         if ($phase -eq 'reopen') {
@@ -61,10 +100,13 @@ try {
     for ($attempt=0; $attempt -lt 30 -and (Test-Path $exe); $attempt++) { Start-Sleep -Seconds 1 }
     if (Test-Path $exe) { throw 'Uninstaller left the application executable' }
     if (Test-Path $registryPath) { throw 'Uninstaller left its registry entry' }
+    foreach ($folder in $shortcutFolders) {
+        if (Test-Path (Join-Path $folder 'ScratchJGET.lnk')) { throw "Uninstaller left the application shortcut in $folder" }
+    }
     if ((Get-FileHash $sentinel -Algorithm SHA256).Hash -ne $sentinelHash) { throw 'Uninstall modified the standard project library' }
     if ((Get-FileHash $db -Algorithm SHA256).Hash -ne $beforeUninstall) { throw 'Uninstall modified the project library' }
-    @{passed=$true;product=$manifest.productName;version=$manifest.version;os=[Environment]::OSVersion.VersionString;architecture=$env:PROCESSOR_ARCHITECTURE;installerSha256=(Get-FileHash $installer -Algorithm SHA256).Hash;regressionPrograms=12;nativePhases=@('create','reopen');repeatInstallPreservedLibrary=$true;uninstallPreservedLibrary=$true} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $evidence 'summary.json')
+    @{passed=$true;product=$manifest.productName;version=$manifest.version;os=[Environment]::OSVersion.VersionString;architecture=$env:PROCESSOR_ARCHITECTURE;installerSha256=(Get-FileHash $installer -Algorithm SHA256).Hash;upgrade=$upgradeResult;regressionPrograms=$regressionTests.Count;nativePhases=@('create','reopen');repeatInstallPreservedLibrary=$true;uninstallPreservedLibrary=$true} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $evidence 'summary.json')
 } finally {
-    Get-ChildItem $qaRoot -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.json','.txt') } | Copy-Item -Destination $evidence
+    Get-ChildItem $qaRoot -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.json','.txt','.png') } | Copy-Item -Destination $evidence
     Stop-Transcript
 }

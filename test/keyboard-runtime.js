@@ -98,6 +98,10 @@ async function main () {
         assert.strictEqual(Keyboard.keyForEvent({key}), key);
         assert(Keys.values.includes(key));
     }
+    for (const event of [{key: ' ', code: 'Space'}, {key: 'Spacebar'}, {code: 'Space'}]) {
+        assert.strictEqual(Keyboard.keyForEvent(event), 'Space');
+    }
+    assert(Keys.values.includes('Space'));
     for (const extra of [{ctrlKey: true}, {altKey: true}, {metaKey: true}, {isComposing: true}, {keyCode: 229}]) {
         assert.strictEqual(Keyboard.keyForEvent(Object.assign({key: 'ф', code: 'KeyA'}, extra)), null);
     }
@@ -139,7 +143,8 @@ async function main () {
     const one = sprite('one', [right, otherRight, russian, flag, click]);
     const hidden = sprite('hidden', [hat('onkey', 'ArrowRight')], false);
     const later = sprite('later', [hat('onkey', 'ArrowRight')]);
-    const firstPage = page([one, hidden]);
+    const spaceSprite = sprite('space', [hat('onkey', 'Space')]);
+    const firstPage = page([one, hidden, spaceSprite]);
     ScratchJr.stage.currentPage = firstPage;
     Keyboard.start();
     Keyboard.start();
@@ -217,6 +222,23 @@ async function main () {
     assert.strictEqual(keydown({defaultPrevented: true}).defaultPrevented, true);
     assert.strictEqual(runtime.threadsRunning.length, 0);
 
+    // Space is serialized as a named key, launches its own script and does not
+    // scroll the page. It remains available for typing and browser shortcuts.
+    assert.strictEqual(keydown({key: ' ', code: 'Space'}).defaultPrevented, true);
+    runtime.tickTask();
+    assert.strictEqual(spaceSprite.runs, 1);
+    assert.strictEqual(one.runs, 7);
+    runtime.stopThreads();
+    assert.strictEqual(keydown({key: 'Spacebar'}).defaultPrevented, true);
+    runtime.tickTask();
+    assert.strictEqual(spaceSprite.runs, 2);
+    blocked(() => {}, () => {}, {key: ' ', code: 'Space', target: {tagName: 'INPUT'}});
+    for (const modifier of ['ctrlKey', 'altKey', 'metaKey']) {
+        blocked(() => {}, () => {}, {key: ' ', code: 'Space', [modifier]: true});
+    }
+    blocked(() => { ScratchJr.stage.currentPage = page([later]); },
+        () => { ScratchJr.stage.currentPage = firstPage; }, {key: ' ', code: 'Space'});
+
     ScratchJr.inFullscreen = true;
     keydown();
     assert.strictEqual(runtime.threadsRunning.length, 3);
@@ -230,6 +252,6 @@ async function main () {
     assert.strictEqual(runtime.threadsRunning.length, 3);
     Keyboard.stop();
     assert.strictEqual(window.handlers.get('pagehide').size, 0);
-    console.log('PASS keyboard runtime: 33 Russian letters, both layouts, arrows, repeat, active page, hidden sprites, old hats, editor guards and lifecycle');
+    console.log('PASS keyboard runtime: 33 Russian letters, both layouts, arrows, Space, repeat, active page, hidden sprites, old hats, editor guards and lifecycle');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });
