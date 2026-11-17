@@ -1,5 +1,8 @@
 # Windows legacy-library startup fix — 1.3.2-jget.4
 
+This report records the initial local candidate. The final published installer,
+Windows CI and public-download checks are recorded in [the release report](../release-jget4/README.md).
+
 17 November 2026. Local unpublished Windows candidate. The reported screenshot
 shows failure while importing `Documents/ScratchJR/scratchjr.sqllite` on first
 launch. The user confirmed old ScratchJr was installed but there were no projects.

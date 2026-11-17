@@ -1,0 +1,56 @@
+{
+  "uninstallPreservedLibrary": true,
+  "repeatInstallPreservedLibrary": true,
+  "installerSha256": "7836C8441285CAC2D98801A57FF27265110B86616A79EC6ED780994A33A6A839",
+  "upgrade": {
+    "from": "1.3.2-jget.1",
+    "newShortcutTargetsVerified": true,
+    "to": "1.3.2-jget.4",
+    "librarySentinelPreserved": true,
+    "previousExecutableRemoved": true,
+    "nativePreviousProjectMigrationTested": false,
+    "previousShortcutsRemoved": true,
+    "previousInstallerSha256": "09F2F9E0125AE7B5582B67ACE7CCBB8B69DB7844A510FCFE241CB4D2E90FB4B8"
+  },
+  "regressionPrograms": 15,
+  "product": "ScratchJGET",
+  "nativePhases": [
+    "legacy-cancel",
+    "create",
+    "reopen"
+  ],
+  "os": "Microsoft Windows NT 10.0.20348.0",
+  "legacyStartup": {
+    "legacy-cancel": {
+      "phase": "legacy-cancel",
+      "pass": true,
+      "promptCount": 1,
+      "choice": 1,
+      "windowCreated": false,
+      "sourcePreserved": true
+    },
+    "reopen": {
+      "phase": "reopen",
+      "pass": true,
+      "promptCount": 0,
+      "choice": null,
+      "windowCreated": true,
+      "sourcePreserved": true,
+      "projectCount": 1,
+      "recoveryNote": "legacy-library-recovery-1794920900339-8d1e6222.json"
+    },
+    "create": {
+      "phase": "create",
+      "pass": true,
+      "promptCount": 1,
+      "choice": 0,
+      "windowCreated": true,
+      "sourcePreserved": true,
+      "projectCount": 0,
+      "recoveryNote": "legacy-library-recovery-1794920900339-8d1e6222.json"
+    }
+  },
+  "version": "1.3.2-jget.4",
+  "passed": true,
+  "architecture": "AMD64"
+}

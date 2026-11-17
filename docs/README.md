@@ -1,6 +1,8 @@
-# Документация J-GET Junior
+# Документация ScratchJGET
 
-- [Установка, обновление и совместимость 1.3.2-jget.1](JGET-RELEASE.md).
+- [Установка, обновление и совместимость: Windows .4, Mac .3](JGET-RELEASE.md).
+- [Исправление запуска Windows в .4](RELEASE-NOTES-1.3.2-jget.4.md).
+- [Проверка Windows, упаковки и опубликованного EXE .4](release-checks/2026-11-17/release-jget4/README.md).
 - [Памятка для Windows](Windows-класс.txt).
 - [Установка на Mac](Mac-установка.txt).
 - [Источники и обработка звуков](SOUND-ASSETS.md).
