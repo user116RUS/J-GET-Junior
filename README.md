@@ -1,5 +1,11 @@
 # ScratchJGET
 
+<a href="https://github.com/user116RUS/J-GET-Junior/releases/latest/download/ScratchJGET-Setup.exe">
+  <img src="docs/assets/download-windows.svg" alt="Скачать для Windows" width="380" height="80">
+</a>
+
+**Один установщик EXE для Windows 64 бит.** Скачайте, запустите и следуйте мастеру установки — ярлык ScratchJGET появится на рабочем столе.
+
 Приложение для первых шагов в программировании: собирайте команды из блоков, рисуйте персонажей, создавайте истории и игры. Работает без интернета на Windows и Mac.
 
 Текущий выпуск: **ScratchJGET 1.3.2-jget.3**. Прежнее название — J-GET Junior. ScratchJGET основан на открытом коде ScratchJr и общественного порта [ScratchJr-Desktop](https://github.com/jfo8000/ScratchJr-Desktop). Это самостоятельная модификация со своим названием и оформлением, не официальный выпуск ScratchJr.
@@ -8,7 +14,7 @@
 
 | Система | Файл | Установка |
 | --- | --- | --- |
-| Windows x64 | [Скачать ScratchJGET-Setup.exe](https://github.com/user116RUS/J-GET-Junior/releases/download/v1.3.2-jget.3/ScratchJGET-Setup.exe) | Закройте приложение, запустите установщик и используйте ярлык «ScratchJGET». |
+| Windows x64 | [Скачать ScratchJGET-Setup.exe](https://github.com/user116RUS/J-GET-Junior/releases/latest/download/ScratchJGET-Setup.exe) | Закройте приложение, запустите установщик и используйте ярлык «ScratchJGET». |
 | Mac Intel / Apple Silicon через Rosetta | [Скачать приложение ZIP](https://github.com/user116RUS/J-GET-Junior/releases/download/v1.3.2-jget.3/ScratchJGET-1.3.2-jget.3-mac-Intel.zip) | Распакуйте архив и перенесите `ScratchJGET.app` в «Программы». |
 
 [Страница релиза](https://github.com/user116RUS/J-GET-Junior/releases/tag/v1.3.2-jget.3) · [Что изменилось](docs/RELEASE-NOTES-1.3.2-jget.3.md) · [Установка и совместимость](docs/JGET-RELEASE.md) · [Памятка для Windows](docs/Windows-класс.txt)
