@@ -1,0 +1,74 @@
+
+TEST editor-close.js
+PASS: open drawing, discard drawing, wait for stage update, close only after save
+(node:86076) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST input-responsiveness.js
+PASS input responsiveness: library cancel and lobby navigation unlock immediately; quick clicks run on release; long-hold deletion remains deliberate
+(node:86078) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST keyboard-runtime.js
+PASS keyboard runtime: 33 Russian letters, both layouts, arrows, Space, repeat, active page, hidden sprites, old hats, editor guards and lifecycle
+(node:86079) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST keyboard-ui.js
+PASS: 38 keyboard arguments including Space, palette, start shape, serialize/reopen, copy, picker selection and undo record
+(node:86080) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST legacy-recovery.js
+PASS: explicit legacy recovery, preserved source/sidecars/media, durable new library and note, stale-source and existing-target guards, narrow structural errors, IO/media/restore/offline exclusions
+(node:86081) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST library-load.js
+Original MiB 75.20 metadata KiB 76 darwin arm64 v18.15.0
+50 durable writes (ms) p50 8.7 p95 11.9
+10 character and project saves (ms) p50 38.8 p95 52.9
+PASS: 300 original assets, 100 projects and 10 new drawings after reopening
+(node:86103) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST library-migration.js
+PASS: original preserved, retry after failed import, isolated updates, offline and first launch, restore precedence
+(node:86121) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST library-startup.js
+PASS: normal startup, narrow recovery prompt, cancel/close, explicit fresh start, write failure propagation
+
+TEST media-storage.js
+PASS: inline migration, interrupted commit, deduplication, restore media, missing and corrupt backup
+(node:86124) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST paint-regression.js
+PASS: curve sampling and intersection, stroke spacing, undo/redo, history bounds, save retry
+(node:86125) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST sound-client.js
+PASS: renderer audio restart/stop, normal end, failures, restart/cancellation races, decode errors, legacy play and missing audio
+
+TEST sound-library.js
+PASS: 44 assets, preload, script persistence/copy/playback, project collection save/reopen/migration/undo, paged palette, recordings and preview cancellation
+(node:86127) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST storage.js
+PASS: immediate saves, 18 MiB media, retry after disk failure, statement lifetime, cleanup, restore
+(node:86128) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST target-collision-runtime.js
+PASS target collision: exact sprite identity, pixel-hit gate, same page, hidden/text/deleted/self/dragged guards, polling/repeat/stop, old trigger and launch lifecycle
+(node:86131) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+TEST target-collision-ui.js
+PASS: targeted collision palette, explicit selection, same-page choices, menu/undo, persistence, copies, rename/delete/restore and original collision block
+(node:86132) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)

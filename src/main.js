@@ -89,6 +89,7 @@ process.on('unhandledRejection', exitAfterError);
 
 // SQL JS adds its own uncaughtException handler  - so we need to register ours first.
 const ProjectLibrary = require('./projectLibrary');
+const openStartupLibrary = require('./libraryStartup');
 
 
 
@@ -229,7 +230,11 @@ app.on('ready', () => {
   let database;
   try {
     projectLibrary = new ProjectLibrary(app.getPath('documents'), process.platform, process.env.LOCALAPPDATA);
-    database = projectLibrary.open();
+    database = openStartupLibrary(projectLibrary, dialog, app.getLocale());
+    if (!database) {
+      app.quit();
+      return;
+    }
   } catch (error) {
     showStorageError(error);
     app.quit();

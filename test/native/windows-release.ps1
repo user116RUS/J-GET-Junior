@@ -72,7 +72,9 @@ try {
     Copy-Item 'test/native/renderer.js' (Join-Path $qaRoot 'renderer.js')
     Copy-Item 'test/native/project-sounds.js' (Join-Path $qaRoot 'project-sounds.js')
     $env:JGET_QA_ROOT = $qaRoot
-    foreach ($phase in @('create', 'reopen')) {
+    $env:JGET_QA_LEGACY = '1'
+    $startupResults = @{}
+    foreach ($phase in @('legacy-cancel', 'create', 'reopen')) {
         if ($phase -eq 'reopen') {
             $savedDatabase = Join-Path $qaRoot 'Local/ScratchJr-Classroom/Projects/scratchjr.sqllite'
             $savedHash = (Get-FileHash $savedDatabase -Algorithm SHA256).Hash
@@ -86,6 +88,21 @@ try {
         $p = Start-Process -FilePath $exe -ArgumentList '--disable-gpu','--mute-audio' -PassThru -RedirectStandardOutput (Join-Path $evidence "$phase.stdout.log") -RedirectStandardError (Join-Path $evidence "$phase.stderr.log")
         if (!$p.WaitForExit(240000)) { $p.Kill(); throw "Native $phase timed out" }
         if ($p.ExitCode -ne 0) { throw "Native $phase exit code $($p.ExitCode)" }
+        $startup = Get-Content (Join-Path $qaRoot "startup-$phase.json") -Raw | ConvertFrom-Json
+        if (!$startup.pass -or !$startup.sourcePreserved) { throw "Legacy startup check failed: $phase" }
+        $startupResults[$phase] = $startup
+        # Independently check the synthetic source, journal and media after the
+        # actual application process exits, including app.exit() on reopen.
+        $fixture = Get-Content (Join-Path $qaRoot 'legacy-fixture.json') -Raw | ConvertFrom-Json
+        foreach ($file in $fixture.files) {
+            $legacyFile = Join-Path (Join-Path $qaRoot 'Documents/ScratchJR') $file.relative
+            if ((Get-FileHash $legacyFile -Algorithm SHA256).Hash -ne $file.sha256) { throw "Legacy fixture changed: $($file.relative)" }
+        }
+        if ($phase -eq 'legacy-cancel') {
+            if ($startup.promptCount -ne 1 -or $startup.choice -ne 1 -or $startup.windowCreated) { throw 'Legacy cancel was not observed' }
+            if (Test-Path (Join-Path $qaRoot 'Local/ScratchJr-Classroom/Projects/scratchjr.sqllite')) { throw 'Cancel created a project library' }
+            continue
+        }
         $result = Get-Content (Join-Path $qaRoot "$phase.json") -Raw | ConvertFrom-Json
         if ($phase -eq 'create') {
             if (!$result.readyForClose -or !(Test-Path (Join-Path $qaRoot 'native-close.txt'))) { throw 'Native close/save was not completed' }
@@ -105,7 +122,7 @@ try {
     }
     if ((Get-FileHash $sentinel -Algorithm SHA256).Hash -ne $sentinelHash) { throw 'Uninstall modified the standard project library' }
     if ((Get-FileHash $db -Algorithm SHA256).Hash -ne $beforeUninstall) { throw 'Uninstall modified the project library' }
-    @{passed=$true;product=$manifest.productName;version=$manifest.version;os=[Environment]::OSVersion.VersionString;architecture=$env:PROCESSOR_ARCHITECTURE;installerSha256=(Get-FileHash $installer -Algorithm SHA256).Hash;upgrade=$upgradeResult;regressionPrograms=$regressionTests.Count;nativePhases=@('create','reopen');repeatInstallPreservedLibrary=$true;uninstallPreservedLibrary=$true} | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $evidence 'summary.json')
+    @{passed=$true;product=$manifest.productName;version=$manifest.version;os=[Environment]::OSVersion.VersionString;architecture=$env:PROCESSOR_ARCHITECTURE;installerSha256=(Get-FileHash $installer -Algorithm SHA256).Hash;upgrade=$upgradeResult;regressionPrograms=$regressionTests.Count;nativePhases=@('legacy-cancel','create','reopen');legacyStartup=$startupResults;repeatInstallPreservedLibrary=$true;uninstallPreservedLibrary=$true} | ConvertTo-Json -Depth 7 | Set-Content (Join-Path $evidence 'summary.json')
 } finally {
     Get-ChildItem $qaRoot -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.json','.txt','.png') } | Copy-Item -Destination $evidence
     Stop-Transcript

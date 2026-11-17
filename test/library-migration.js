@@ -34,7 +34,7 @@ try {
   assert.strictEqual(original.filename, path.join(documents, 'ScratchJR', 'scratchjr.sqllite'));
 
   fs.writeFileSync(original.filename, 'damaged DB');
-  assert.throws(() => classroom.open(), /scratchjr.sqllite/);
+  assert.throws(() => classroom.open(), error => error.code === 'LEGACY_LIBRARY_INVALID' && error.sourceFile === original.filename);
   assert(!fs.existsSync(classroom.filename));
   assert.strictEqual(fs.readFileSync(original.filename, 'utf8'), 'damaged DB');
   fs.writeFileSync(original.filename, bytes);

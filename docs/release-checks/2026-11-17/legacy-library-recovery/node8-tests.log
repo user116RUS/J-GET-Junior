@@ -1,0 +1,15 @@
+
+TEST storage
+PASS: immediate saves, 18 MiB media, retry after disk failure, statement lifetime, cleanup, restore
+
+TEST library-migration
+PASS: original preserved, retry after failed import, isolated updates, offline and first launch, restore precedence
+
+TEST media-storage
+PASS: inline migration, interrupted commit, deduplication, restore media, missing and corrupt backup
+
+TEST legacy-recovery
+PASS: explicit legacy recovery, preserved source/sidecars/media, durable new library and note, stale-source and existing-target guards, narrow structural errors, IO/media/restore/offline exclusions
+
+TEST library-startup
+PASS: normal startup, narrow recovery prompt, cancel/close, explicit fresh start, write failure propagation

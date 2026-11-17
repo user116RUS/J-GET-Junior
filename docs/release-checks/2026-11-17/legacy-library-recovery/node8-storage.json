@@ -1,0 +1,8 @@
+{
+  "status": null,
+  "signal": "SIGTERM",
+  "error": "Error: spawnSync <workspace>/Mac/ScratchJGET.app/Contents/MacOS/ScratchJGET ETIMEDOUT",
+  "elapsedMs": 180098,
+  "stdout": "PASS: immediate saves, 18 MiB media, retry after disk failure, statement lifetime, cleanup, restore\n",
+  "stderr": ""
+}

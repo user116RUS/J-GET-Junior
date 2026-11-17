@@ -26,6 +26,20 @@ function digest(bytes) {
   return crypto.createHash('sha256').update(bytes).digest('hex');
 }
 
+function invalidDatabase(message) {
+  const error = new Error(message);
+  error.code = 'INVALID_PROJECT_DATABASE';
+  return error;
+}
+
+function isInvalidDatabase(error) {
+  if (error.code === 'INVALID_PROJECT_DATABASE') return true;
+  // Filesystem errors, missing media and exhausted memory must never offer a
+  // fresh library. These are the structural errors emitted by bundled SQL.js.
+  if (error.code) return false;
+  return /^(file is encrypted or is not a database|database disk image is malformed|malformed database schema(?:[\s(].*)?|unsupported file format)$/i.test(String(error.message || error));
+}
+
 function mediaFile(folder, hash) {
   if (typeof hash !== 'string' || !/^[0-9a-f]{64}$/.test(hash)) throw new Error('Invalid media hash');
   return path.join(folder, hash);
@@ -49,18 +63,35 @@ class DatabaseManager {
       if (error.code !== 'ENOENT' || restoreFilename) throw error;
     }
 
-    this.db = new SQL.Database(bytes);
     try {
+      if (bytes && (bytes.length < 100 || bytes.slice(0, 16).toString('binary') !== 'SQLite format 3\u0000')) {
+        throw invalidDatabase('ScratchJr file does not contain a valid SQLite header');
+      }
+      this.db = new SQL.Database(bytes);
       if (!bytes) this.initTables();
       // Checking the tables also rejects empty or unrelated files before writing.
       const tables = this.query({stmt: "SELECT name FROM sqlite_master WHERE type = 'table'"});
       ['projects', 'projectfiles', 'usershapes', 'userbkgs'].forEach((table) => {
         if (!tables.some(row => row.name.toLowerCase() === table)) {
-          throw new Error('Missing ScratchJr table: ' + table);
+          throw invalidDatabase('Missing ScratchJr table: ' + table);
         }
       });
+      const requiredColumns = {
+        PROJECTS: ['ID', 'NAME', 'JSON', 'THUMBNAIL', 'ALTMD5'],
+        PROJECTFILES: ['MD5', 'CONTENTS'],
+        USERSHAPES: ['MD5', 'ALTMD5'],
+        USERBKGS: ['MD5', 'ALTMD5']
+      };
+      Object.keys(requiredColumns).forEach((table) => {
+        const columns = this.query({stmt: 'PRAGMA table_info(' + table + ')'});
+        requiredColumns[table].forEach((column) => {
+          if (!columns.some(row => row.name.toUpperCase() === column)) {
+            throw invalidDatabase('Missing ScratchJr column: ' + table + '.' + column);
+          }
+        });
+      });
       if (restoreFilename && this.db.exec('PRAGMA integrity_check')[0].values[0][0] !== 'ok') {
-        throw new Error('ScratchJr restore file failed SQLite integrity check');
+        throw invalidDatabase('ScratchJr restore file failed SQLite integrity check');
       }
       const columns = this.query({stmt: 'PRAGMA table_info(PROJECTS)'});
       const needsMigration = !columns.some(row => row.name.toUpperCase() === 'ISGIFT');
@@ -69,6 +100,11 @@ class DatabaseManager {
       if (!bytes || needsMigration || migratedMedia || restoreFilename) this.save();
     } catch (error) {
       this.close();
+      if (bytes && isInvalidDatabase(error)) {
+        const invalid = error.code === 'INVALID_PROJECT_DATABASE' ? error : invalidDatabase(String(error.message || error));
+        invalid.sourceDigest = digest(bytes);
+        throw invalid;
+      }
       throw error;
     }
   }

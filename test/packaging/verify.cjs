@@ -25,7 +25,7 @@ const read = name => fs.readFileSync(name, 'utf8');
 const sha1 = bytes => crypto.createHash('sha1').update(bytes).digest('hex');
 const textExtensions = new Set(['.js', '.css', '.svg', '.json', '.html']);
 const notices = ['README.md', 'LICENSE', 'TRADEMARKS', 'THIRD_PARTY_NOTICES.md',
-    'docs/Windows-класс.txt', 'docs/Mac-установка.txt', 'docs/JGET-RELEASE.md', 'docs/SOUND-ASSETS.md', 'docs/CHARACTER-RESTORATION.md', 'docs/PROJECT-SOUNDS.md', 'docs/RELEASE-NOTES-1.3.2-jget.3.md'];
+    'docs/Windows-класс.txt', 'docs/Mac-установка.txt', 'docs/JGET-RELEASE.md', 'docs/SOUND-ASSETS.md', 'docs/CHARACTER-RESTORATION.md', 'docs/PROJECT-SOUNDS.md', 'docs/RELEASE-NOTES-1.3.2-jget.3.md', 'docs/RELEASE-NOTES-1.3.2-jget.4.md'];
 const options = {babelrc: false, sourceMaps: false,
     presets: [[require('babel-preset-env'), {targets: {electron: '1.8'}}], require('babel-preset-react')],
     plugins: [require('babel-plugin-transform-async-to-generator')]};

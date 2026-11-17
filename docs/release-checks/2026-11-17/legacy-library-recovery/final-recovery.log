@@ -1,0 +1,3 @@
+PASS: explicit legacy recovery, preserved source/sidecars/media, durable new library and note, stale-source and existing-target guards, narrow structural errors, IO/media/restore/offline exclusions
+(node:87622) V8: <workspace>/Mac/ScratchJGET.app/Contents/Resources/app/node_modules/sql.js/js/sql-memory-growth.js:452 Invalid asm.js: Invalid member of stdlib
+(Use `node --trace-warnings ...` to show where the warning was created)

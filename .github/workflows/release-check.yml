@@ -5,7 +5,7 @@ on:
       release_tag:
         description: Draft release tag containing ScratchJGET-Setup.exe
         required: true
-        default: v1.3.2-jget.3
+        default: v1.3.2-jget.4
 permissions:
   contents: write # GitHub requires push access to retrieve draft releases.
 jobs:
